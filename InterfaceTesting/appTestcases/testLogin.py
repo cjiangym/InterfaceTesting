@@ -159,6 +159,7 @@ class loginTest(unittest.TestCase):
         devcode = dict["devcode"]
         os = dict["os"]
         timestamp = dict["timestamp"]
+        print(timestamp)
         #获取key
        # key_list =
         #key = Common_method.get_key()
