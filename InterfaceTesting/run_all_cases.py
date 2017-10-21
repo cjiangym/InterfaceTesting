@@ -29,6 +29,15 @@ class Common_method():
     devcode = "e895ec8c-6c18-4a27-a509-328cd252b6fa"
     timestamp = "20171018160129"
 
+    #获取固定值
+    def get_static_params(self):
+        dict = {"version":"401000",
+                "os":"iOS",
+                "devcode":"e895ec8c-6c18-4a27-a509-328cd252b6fa",
+                "timestamp":"20171018160129"
+                }
+        return dict
+
     #测试用例excel第一个表格
     def get_excle_sheet1(self):
         xlx_data = xlrd.open_workbook ("E:\\iSmartGo\\InterfaceTesting\\Cases.xlsx")

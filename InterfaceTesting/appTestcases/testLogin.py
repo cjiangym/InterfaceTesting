@@ -125,7 +125,7 @@ class loginTest(unittest.TestCase):
         self.assertEqual (is_bind, 0)
         self.assertIsNot(autherkey,"")
 
-    def test_wxlogin_03(self):
+    def test_wxlogin_03_getUserinfo(self):
         u"登录后获取用户信息userinfo"
         appversion = Common_method.__dict__["version"]
         devcode = Common_method.__dict__["devcode"]
@@ -143,6 +143,26 @@ class loginTest(unittest.TestCase):
         user_id  = result["data"]["user"]["id"]
         self.assertEqual(user_id,int(uid))
         print(self.url)
+
+    def test_wxlogin_04_getUserstatus(self):
+        u"登录后获取用户状态userstatus"
+        #获取接口地址前缀
+        sheet1 = Common_method.get_excle_sheet1(self)
+        base_url = sheet1.cell_value(11,2)
+        #用户id
+        uid = sheet1.cell_value(11,6)
+        #用户类型（1为手机账号、4为微信账号）
+        usertype = sheet1.cell_value(11,7)
+        #获取appversion,os等
+        dict = Common_method.get_static_params(self)
+        appversion = dict["version"]
+        devcode = dict["devcode"]
+        os = dict["os"]
+        timestamp = dict["timestamp"]
+        #获取key
+       # key_list =
+        #key = Common_method.get_key()
+
 
 
 
