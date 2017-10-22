@@ -54,7 +54,8 @@ class CityLocationTest(unittest.TestCase):
         self.assertIn("address",data)
         print(result)
 
-    def testGetpositonCity_02(self):
+    '''
+     def testGetpositonCity_02(self):
         u"获取当前定位城市 - 北京"
         sheet1 = Common_method.get_excle_sheet1(self)
         # 获取接口地址前缀
@@ -75,7 +76,7 @@ class CityLocationTest(unittest.TestCase):
         self.assertEqual(status,10001)
         self.assertIn("address",data)
         print(result)
-
+'''
     def test_get_allcity(self):
         u"测试获取所有城市"
         common_method = Common_method()
@@ -107,7 +108,35 @@ class CityLocationTest(unittest.TestCase):
         self.assertIsNot(city_0_address,"")
 
     def test_getAreaData(self):
-        u""
+        u"测试获取区域数据areaData"
+        common_method = Common_method()
+        sheet1 = common_method.get_excle_sheet1()
+        base_url = sheet1.cell_value(13,2)
+        cityName = sheet1.cell_value(13,5)
+        uid = str(math.floor(sheet1.cell_value(13,6)))
+        dict = common_method.get_common_params()
+        appversion = dict["version"]
+        devcode = dict["devcode"]
+        os = dict["os"]
+        list1 = ["appversion","devocde","os","cityName","uid"]
+        list2 = [appversion,devcode,os,cityName,uid]
+        list3 = common_method.get_url(list1,list2)
+        self.url = base_url +list3
+        print(self.url)
+        response = requests.get(self.url)
+        result = json.loads(response.content)
+        print(result)
+        status = result["status"]
+        district_0 = result["data"]["districts"][0]
+        district_1 = result["data"]["districts"][1]
+        self.assertEqual(status,10001)
+        self.assertEqual(district_0["districtId"],-2)
+        self.assertEqual(district_0["districtName"],"附近")
+        self.assertEqual(district_0["towns"][0]["townName"],"附近（智能范围）")
+        self.assertEqual (district_1["districtId"], -1)
+        self.assertEqual (district_1["districtName"], "全部商区")
+        self.assertEqual (district_1["towns"][0]["townName"], "全部")
+
 
 
 
