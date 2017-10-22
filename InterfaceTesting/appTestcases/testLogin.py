@@ -5,8 +5,7 @@ import xlrd
 import hashlib
 import math
 
-#from InterfaceTesting.run_all_cases import Common_method
-from InterfaceTesting.appTestcases.test import Common_method
+from InterfaceTesting.run_all_cases import Common_method
 
 
 #手机号登录、微信登录测试
