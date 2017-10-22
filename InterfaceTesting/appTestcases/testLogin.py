@@ -5,9 +5,12 @@ import xlrd
 import hashlib
 import math
 
-from InterfaceTesting.run_all_cases import Common_method
+#from InterfaceTesting.run_all_cases import Common_method
+from InterfaceTesting.appTestcases.test import Common_method
 
-class loginTest(unittest.TestCase):
+
+#手机号登录、微信登录测试
+class LoginTest(unittest.TestCase):
     def setUp(self):
         pass
     def tearDown(self):
@@ -26,7 +29,7 @@ class loginTest(unittest.TestCase):
         # list拼接接口地址
         list_url1 = ["appversion", "devcode", "phone", "password", "os", "os", "type","uid"]
         list_url2 = [appversion, devcode, phone, password, os, type, uid]
-        list_url3 = Common_method.get_url (list_url1, list_url2)  #生成例如：appversion=401000&devcode=aa783ojkljf&phone=13450244170格式
+        list_url3 = Common_method.get_url (self,list_url1, list_url2)  #生成例如：appversion=401000&devcode=aa783ojkljf&phone=13450244170格式
         url = base_url + list_url3                                #加上接口地址前缀
         print(url)
         return url
@@ -42,11 +45,11 @@ class loginTest(unittest.TestCase):
         timestamp = Common_method.__dict__["timestamp"]
         #字符串加密
         list_key = [thirdid,devcode,timestamp]
-        key = Common_method.get_key(list_key)
+        key = Common_method.get_key(self,list_key)
         #list拼接地址
         list_url1 = ["thirdid","key","uid","appversion","devcode","os","timestamp"]
         list_url2 = [thirdid,key,uid,appversion,devcode,os,timestamp]
-        list_url3 = Common_method.get_url(list_url1,list_url2)  #生成例如：thirdid=aaa&key=joekehfkrjfkdl&appversion=401000格式
+        list_url3 = Common_method.get_url(self,list_url1,list_url2)  #生成例如：thirdid=aaa&key=joekehfkrjfkdl&appversion=401000格式
         url= base_url+list_url3
         print(url)
         return url
@@ -136,7 +139,7 @@ class loginTest(unittest.TestCase):
         # list拼接地址
         list_url1 = ["appversion", "devcode", "os", "uid"]
         list_url2 = [appversion, devcode, os, uid]
-        list_url3 = Common_method.get_url (list_url1,list_url2)  # 生成例如：thirdid=aaa&key=joekehfkrjfkdl&appversion=401000格式
+        list_url3 = Common_method.get_url (self,list_url1,list_url2)  # 生成例如：thirdid=aaa&key=joekehfkrjfkdl&appversion=401000格式
         self.url = base_url + list_url3
         response = requests.get(self.url)
         result = json.loads(response.content)
@@ -154,7 +157,7 @@ class loginTest(unittest.TestCase):
         #用户类型（1为手机账号、4为微信账号）
         usertype = sheet1.cell_value(11,7)
         #获取appversion,os等
-        dict = Common_method.get_static_params(self)
+        dict = Common_method.get_common_params(self)
         appversion = dict["version"]
         devcode = dict["devcode"]
         os = dict["os"]

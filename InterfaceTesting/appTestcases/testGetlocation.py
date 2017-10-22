@@ -7,13 +7,13 @@ import math
 from InterfaceTesting.run_all_cases import Common_method
 
 #定位相关case
-class TestCityLocation(unittest.TestCase):
+class CityLocationTest(unittest.TestCase):
     def setUp(self):
         pass
     def tearDown(self):
         pass
 
-    #基础参数
+    #获取接口地址
     def get_url(self,base_url,locationName,lon,lat,uid):
         #版本号
         appversion = Common_method.__dict__["version"]
@@ -23,11 +23,11 @@ class TestCityLocation(unittest.TestCase):
         timestamp = Common_method.__dict__["timestamp"]
         #加密字符串
         list_key = [uid,locationName,timestamp]
-        key = Common_method.get_key(list_key)
+        key = Common_method.get_key(self,list_key)
         #list拼接口地址url
         list_url1 = ["appversion", "devcode", "locationName", "lon", "lat", "uid", "timestamp","key"]
         list_url2 = [appversion, devcode, locationName, lon, lat, uid, timestamp,key]
-        list_url3 = Common_method.get_url (list_url1,list_url2)  # 生成例如：thirdid=aaa&key=joekehfkrjfkdl&appversion=401000格式
+        list_url3 = Common_method.get_url (self,list_url1,list_url2)  # 生成例如：thirdid=aaa&key=joekehfkrjfkdl&appversion=401000格式
         url = base_url + list_url3
         print(url)
         return url
@@ -75,6 +75,41 @@ class TestCityLocation(unittest.TestCase):
         self.assertEqual(status,10001)
         self.assertIn("address",data)
         print(result)
+
+    def test_get_allcity(self):
+        u"测试获取所有城市"
+        common_method = Common_method()
+        sheet1 = common_method.get_excle_sheet1()
+        base_url = sheet1.cell_value(4,2)
+        uid = str(math.floor(sheet1.cell_value(4,6)))
+        dict = common_method.get_common_params()
+        appversion = dict["version"]
+        devcode = dict["devcode"]
+        os = dict["os"]
+        timestamp = dict["timestamp"]
+        #获得加密key
+        key_list = [timestamp]
+        key = common_method.get_key(key_list)
+        #接口地址
+        list1= ["appversion","devcode","os","timestamp","uid","key"]
+        list2 =[appversion,devcode,os,timestamp,uid,key]
+        list3 = common_method.get_url(list1,list2)
+        self.url = base_url+list3
+        print(self.url)
+        #执行
+        response = requests.get(self.url)
+        result = json.loads(response.content)
+        print(result)
+        status = result["status"]
+        city_0 = result["data"]["citys"][0]
+        city_0_address = city_0["address"]
+        self.assertEqual(status,10001)
+        self.assertIsNot(city_0_address,"")
+
+    def test_getAreaData(self):
+        u""
+
+
 
 
 

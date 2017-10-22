@@ -1,3 +1,4 @@
+#!E:/python
 import unittest
 import requests
 import json
@@ -6,8 +7,7 @@ import math
 from InterfaceTesting.run_all_cases import Common_method
 
 #sessionId
-class getSessionId(unittest.TestCase):
-
+class SessionIdTest(unittest.TestCase):
     def setUp(self):
         pass
     def tearDown(self):
@@ -21,7 +21,7 @@ class getSessionId(unittest.TestCase):
         userkey = "123"
         list_url1 = ["appversion", "devcode", "client", "lon", "lat", "uid", "os", "reqtime","uid","userkey"]
         list_url2 = [app_version, devcode, client, lon, lat, uid, os, reqtime,uid,userkey]
-        list_url3 = Common_method.get_url (list_url1,list_url2)  # 生成例如：thirdid=aaa&key=joekehfkrjfkdl&appversion=401000格式
+        list_url3 = Common_method.get_url (self,list_url1,list_url2)  # 生成例如：thirdid=aaa&key=joekehfkrjfkdl&appversion=401000格式
         url = base_url + list_url3
         return url
 
