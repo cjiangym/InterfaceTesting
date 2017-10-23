@@ -51,6 +51,14 @@ class Common_method():
         sheet1 = xlx_data.sheet_by_index (0)
         return sheet1
 
+
+        # 测试用例excel第二个表格
+    def get_excle_sheet2(self):
+        xlx_data = xlrd.open_workbook ("E:\\iSmartGo\\InterfaceTesting\\Cases.xlsx")
+        # 取第一个表格
+        sheet2 = xlx_data.sheet_by_index(1)
+        return sheet2
+
     #字符串加密
     def get_key(self,list_key):
         pre_key=list_key[0]
