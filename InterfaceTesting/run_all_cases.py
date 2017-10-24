@@ -11,7 +11,8 @@ rootPath = os.path.split(curPath)[0]
 sys.path.append(rootPath)
 
 def all_case():
-    case_dir = "E:\\iSmartGo\\InterfaceTesting\\appTestcases"
+    #case_dir = "E:\\iSmartGo\\InterfaceTesting\\appTestcases"
+    case_dir = curPath +"\\appTestcases"
     testcases = unittest.TestSuite()
     discover = unittest.defaultTestLoader.discover(case_dir,pattern="test*.py",top_level_dir=None)
     testcases.addTest(discover)
@@ -21,7 +22,8 @@ def all_case():
 if __name__ == '__main__':
     #runner = unittest.TextTestRunner().run(all_case())
     testTime = time.strftime("%Y-%m-%d %H_%M_%S",time.localtime())
-    report_path = "E:\iSmartGo\InterfaceTesting\\Results\\" + testTime+ "-testResult.html"
+    #report_path = "E:\\iSmartGo\\InterfaceTesting\\Results\\" + testTime+ "-testResult.html"
+    report_path = curPath+"\\Results\\" +testTime+ "-testResult.html"
     fp = open(report_path, "wb")
     runner = HTMLTestRunner.HTMLTestRunner(stream=fp, title=u"自动化接口测试报告",description=u"用例执行情况：")
     runner.run(all_case())
@@ -46,7 +48,9 @@ class Common_method():
 
     #测试用例excel第一个表格
     def get_excle_sheet1(self):
-        xlx_data = xlrd.open_workbook ("E:\\iSmartGo\\InterfaceTesting\\Cases.xlsx")
+        # xlx_data = xlrd.open_workbook ("E:\\iSmartGo\\InterfaceTesting\\Cases.xlsx")
+        path = curPath + "\\Cases.xlsx"
+        xlx_data = xlrd.open_workbook (path)
         # 取第一个表格
         sheet1 = xlx_data.sheet_by_index (0)
         return sheet1
@@ -54,7 +58,9 @@ class Common_method():
 
         # 测试用例excel第二个表格
     def get_excle_sheet2(self):
-        xlx_data = xlrd.open_workbook ("E:\\iSmartGo\\InterfaceTesting\\Cases.xlsx")
+        #xlx_data = xlrd.open_workbook ("E:\\iSmartGo\\InterfaceTesting\\Cases.xlsx")
+        path = curPath +"\\Cases.xlsx"
+        xlx_data = xlrd.open_workbook(path)
         # 取第一个表格
         sheet2 = xlx_data.sheet_by_index(1)
         return sheet2
