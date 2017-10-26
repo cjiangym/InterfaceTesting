@@ -1,4 +1,3 @@
-#!E:/python
 import unittest
 import requests
 import json
