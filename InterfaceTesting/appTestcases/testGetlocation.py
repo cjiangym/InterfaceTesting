@@ -8,6 +8,9 @@ from InterfaceTesting.run_all_cases import Common_method
 
 #定位相关case
 class CityLocationTest(unittest.TestCase):
+    common_method = Common_method()
+    sheet1 = common_method.get_excle_sheet1()
+    dict = common_method.get_common_params()
     def setUp(self):
         pass
     def tearDown(self):
@@ -33,20 +36,27 @@ class CityLocationTest(unittest.TestCase):
         return url
 
     def testGetpositonCity_01(self):
-        u"获取当前定位城市 - 广州"
-        sheet1 = Common_method.get_excle_sheet1(self)
-        #获取接口地址前缀
-        base_url = sheet1.cell_value (3, 2)
-        # 城市名称
-        locationName = sheet1.cell_value (3, 3)
-        # 经度
-        lon = str(sheet1.cell_value (3, 4))
-        # 纬度
-        lat = str(sheet1.cell_value (3, 5))
-        # 用户id
-        uid = str (math.floor (sheet1.cell_value (3, 6)))
-        self.url = self.get_url(base_url,locationName,lon,lat,uid)
-        response = requests.get(self.url)
+        u"获取当前定位城市"
+        base_url = self.sheet1.cell_value (3, 2)
+        appversion = Common_method.__dict__["version"]
+        devcode = Common_method.__dict__["devcode"]
+        timestamp = Common_method.__dict__["timestamp"]
+        locationName = self.sheet1.cell_value (3, 5)
+        lon = str(self.sheet1.cell_value (3, 6))
+        lat = str(self.sheet1.cell_value (3, 7))
+        uid = str (math.floor (self.sheet1.cell_value (3, 4)))
+        list_key = [uid, locationName, timestamp]       #加密key
+        key = self.common_method.get_key(list_key)
+        params = {
+            "appversion":appversion,
+            "devcode":devcode,
+            "locationName":locationName,
+            "lon":lon,
+            "lat":lat,
+            "uid":uid,
+            "timestamp":timestamp,
+            "key":key}
+        response = requests.get(base_url,params=params)
         result = json.loads(response.content)
         status = result["status"]
         data = result["data"]
@@ -80,25 +90,23 @@ class CityLocationTest(unittest.TestCase):
     def test_get_allcity(self):
         u"测试获取所有城市"
         common_method = Common_method()
-        sheet1 = common_method.get_excle_sheet1()
-        base_url = sheet1.cell_value(4,2)
-        uid = str(math.floor(sheet1.cell_value(4,6)))
-        dict = common_method.get_common_params()
-        appversion = dict["version"]
-        devcode = dict["devcode"]
-        os = dict["os"]
-        timestamp = dict["timestamp"]
-        #获得加密key
+        base_url = self.sheet1.cell_value(4,2)
+        uid = str(math.floor(self.sheet1.cell_value(4,4)))
+        appversion = self.dict["version"]
+        devcode = self.dict["devcode"]
+        os = self.dict["os"]
+        timestamp = self.dict["timestamp"]
         key_list = [timestamp]
         key = common_method.get_key(key_list)
-        #接口地址
-        list1= ["appversion","devcode","os","timestamp","uid","key"]
-        list2 =[appversion,devcode,os,timestamp,uid,key]
-        list3 = common_method.get_url(list1,list2)
-        self.url = base_url+list3
-        print(self.url)
-        #执行
-        response = requests.get(self.url)
+        params = {
+            "appversion":appversion,
+            "devcode":devcode,
+            "os":os,
+            "timestamp":timestamp,
+            "uid":uid,
+            "key":key
+        }
+        response = requests.get(base_url,params=params)
         result = json.loads(response.content)
         print(result)
         status = result["status"]
