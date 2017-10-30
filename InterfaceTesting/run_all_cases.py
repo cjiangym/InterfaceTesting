@@ -31,7 +31,7 @@ if __name__ == '__main__':
 
 #通用方法
 class Common_method():
-    #固定传值
+
     version = "401000"
     os = "iOS"
     devcode = "e895ec8c-6c18-4a27-a509-328cd252b6fa"
@@ -61,9 +61,16 @@ class Common_method():
         #xlx_data = xlrd.open_workbook ("E:\\iSmartGo\\InterfaceTesting\\Cases.xlsx")
         path = curPath +"\\Cases.xlsx"
         xlx_data = xlrd.open_workbook(path)
-        # 取第一个表格
         sheet2 = xlx_data.sheet_by_index(1)
         return sheet2
+
+        # 测试用例excel第三个表格
+    def get_excle_sheet3(self):
+        # xlx_data = xlrd.open_workbook ("E:\\iSmartGo\\InterfaceTesting\\Cases.xlsx")
+        path = curPath + "\\Cases.xlsx"
+        xlx_data = xlrd.open_workbook(path)
+        sheet3 = xlx_data.sheet_by_index(2)
+        return sheet3
 
     #字符串加密
     def get_key(self,list_key):
