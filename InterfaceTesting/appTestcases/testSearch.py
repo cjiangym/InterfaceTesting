@@ -13,6 +13,9 @@ from InterfaceTesting.run_all_cases import Common_method
 
 #手机号登录、微信登录测试
 class LoginTest(unittest.TestCase):
+    commom_method = Common_method()
+    sheet1 = commom_method.get_excle_sheet1()
+    sheet2 = commom_method.get_excle_sheet2()
     def setUp(self):
         pass
     def tearDown(self):
@@ -173,3 +176,10 @@ class LoginTest(unittest.TestCase):
         self.assertEqual(data_len, 0)
         self.assertEqual (status,20007)
         print (result)
+
+    def test_time(self):
+        u"测试获取excle单元格时间"
+        print(self.sheet2.cell_value(5,7))
+        date = xldate_as_tuple(self.sheet2.cell_value(5,7),0)
+        print(date)
+        print(datetime.datetime(*date))

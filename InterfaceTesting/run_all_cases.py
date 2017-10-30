@@ -55,7 +55,6 @@ class Common_method():
         sheet1 = xlx_data.sheet_by_index (0)
         return sheet1
 
-
         # 测试用例excel第二个表格
     def get_excle_sheet2(self):
         #xlx_data = xlrd.open_workbook ("E:\\iSmartGo\\InterfaceTesting\\Cases.xlsx")
@@ -80,7 +79,7 @@ class Common_method():
         pre_key = pre_key+"#smartg02ol5"
         key = hashlib.md5(pre_key.encode("utf-8")).hexdigest()
         return key
-
+'''
     #将传入的参数拼接成接口地址
     def get_url(self,list1,list2):   #list1为固定值：version，os,devcode等；list2为动态值version的值，os的值，devcode的值
         def function(parms1,param2):
@@ -90,8 +89,7 @@ class Common_method():
         for parms in list3[1:]:
             list4 = list4+"&"+parms
         return list4
+'''
 
-    #获取参数
-    #def get_params(list):
 
 
