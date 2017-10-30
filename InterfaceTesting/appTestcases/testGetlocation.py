@@ -16,25 +16,6 @@ class CityLocationTest(unittest.TestCase):
     def tearDown(self):
         pass
 
-    #获取接口地址
-    def get_url(self,base_url,locationName,lon,lat,uid):
-        #版本号
-        appversion = Common_method.__dict__["version"]
-        #设备号
-        devcode = Common_method.__dict__["devcode"]
-        #时间戳
-        timestamp = Common_method.__dict__["timestamp"]
-        #加密字符串
-        list_key = [uid,locationName,timestamp]
-        key = Common_method.get_key(self,list_key)
-        #list拼接口地址url
-        list_url1 = ["appversion", "devcode", "locationName", "lon", "lat", "uid", "timestamp","key"]
-        list_url2 = [appversion, devcode, locationName, lon, lat, uid, timestamp,key]
-        list_url3 = Common_method.get_url (self,list_url1,list_url2)  # 生成例如：thirdid=aaa&key=joekehfkrjfkdl&appversion=401000格式
-        url = base_url + list_url3
-        print(url)
-        return url
-
     def testGetpositonCity_01(self):
         u"获取当前定位城市"
         base_url = self.sheet1.cell_value (3, 2)

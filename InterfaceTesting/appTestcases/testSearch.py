@@ -144,33 +144,7 @@ class LoginTest(unittest.TestCase):
         status = result["status"]
         print (result)
 
-    def test_scanIngoods_01(self):
-        u"测试到店扫描，未扫描"
-        common_method = Common_method ()
-        sheet2 = Common_method ().get_excle_sheet2 ()
-        base_url = sheet2.cell_value (6, 2)
-        uid = str(math.floor (sheet2.cell_value (6, 4)))
-        shopid = str(math.floor (sheet2.cell_value (6, 5)))
-        barcode = str(math.floor(sheet2.cell_value(6,7)))
-        dict = common_method.get_common_params()
-        timestamp = dict["timestamp"]
-        authkey = sheet2.cell_value (6, 6)
-        key_list = [shopid, uid, barcode, timestamp,authkey]
-        key = common_method.get_key (key_list)
-        # 获取接口地址
-        list1 = ["uid", "shopid", "barcode", "timestamp","key"]
-        list2 = [uid, shopid, barcode, timestamp,key]
-        list3 = common_method.get_url (list1, list2)
-        self.url = base_url + list3
-        print (self.url)
-        response = requests.get (self.url)
-        result = json.loads (response.content)
-        data = result["data"]
-        data_len = len(data)
-        status = result["status"]
-        self.assertNotEqual(data_len,0)
-        self.assertEqual(status,10001)
-        print (result)
+
 
     def test_scanIngoods_02(self):
         u"测试到店扫描，已扫描"
