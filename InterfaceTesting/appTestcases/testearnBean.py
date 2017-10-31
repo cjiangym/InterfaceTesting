@@ -180,7 +180,7 @@ class DailySignTest(unittest.TestCase):
 
     def test_scanGoods_01(self):
         u"测试扫描，未扫描过商品"
-        self.get_shopScanlist()
+        self.get_shopScanlist()       
         response_scan = self.get_scanGoods()
         self.assertEqual(response_scan.status_code,200)
         print(response_scan.url)
