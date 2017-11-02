@@ -45,30 +45,7 @@ class CityLocationTest(unittest.TestCase):
         self.assertIn("address",data)
         print(result)
 
-    '''
-     def testGetpositonCity_02(self):
-        u"获取当前定位城市 - 北京"
-        sheet1 = Common_method.get_excle_sheet1(self)
-        # 获取接口地址前缀
-        base_url = sheet1.cell_value (4, 2)
-        # 城市名称
-        locationName = sheet1.cell_value (4, 3)
-        # 经度
-        lon = str (sheet1.cell_value (4, 4))
-        # 纬度
-        lat = str (sheet1.cell_value (4, 5))
-        # 用户id
-        uid = str (math.floor (sheet1.cell_value (4, 6)))
-        self.url = self.get_url(base_url, locationName, lon, lat, uid)
-        response = requests.get(self.url)
-        result = json.loads(response.content)
-        status = result["status"]
-        data = result["data"]
-        self.assertEqual(status,10001)
-        self.assertIn("address",data)
-        print(result)
-'''
-    def test_get_allcity(self):
+    def test_getAllcity(self):
         u"测试获取所有城市"
         common_method = Common_method()
         base_url = self.sheet1.cell_value(4,2)
@@ -98,21 +75,18 @@ class CityLocationTest(unittest.TestCase):
 
     def test_getAreaData(self):
         u"测试获取区域数据areaData"
-        common_method = Common_method()
-        sheet1 = common_method.get_excle_sheet1()
-        base_url = sheet1.cell_value(13,2)
-        cityName = sheet1.cell_value(13,5)
-        uid = str(math.floor(sheet1.cell_value(13,6)))
-        dict = common_method.get_common_params()
-        appversion = dict["version"]
-        devcode = dict["devcode"]
-        os = dict["os"]
-        list1 = ["appversion","devocde","os","cityName","uid"]
-        list2 = [appversion,devcode,os,cityName,uid]
-        list3 = common_method.get_url(list1,list2)
-        self.url = base_url +list3
-        print(self.url)
-        response = requests.get(self.url)
+        base_url = self.sheet1.cell_value(13,2)
+        uid = self.sheet1.cell_value(13,6)
+        if isinstance(uid,float):
+            uid = math.floor(uid)
+        params = {
+            "appversion":self.common_method.version,
+            "devocde":self.common_method.devcode,
+            "os":self.common_method.os,
+            "cityName":self.sheet1.cell_value(13,5),
+            "uid":uid
+        }
+        response = requests.get(base_url,params=params)
         result = json.loads(response.content)
         print(result)
         status = result["status"]

@@ -13,7 +13,7 @@ class Login():
         base_url = self.sheet1.cell_value (5, 2)  # 接口地址
         phone = self.sheet1.cell_value (5, 5)  # 手机号码
         if isinstance (phone, float):  # 判断单元格值的类型
-            phone = str (math.floor (phone))  # 转换成str类型
+            phone = str(math.floor (phone))  # 转换成str类型
         password = self.sheet1.cell_value (5, 6)  # 密码
         password_md5 = hashlib.md5 (password.encode ("utf-8")).hexdigest ()  # 密码通过md5加密
         userId = str (math.floor (self.sheet1.cell_value (5, 4)))  # 游客id

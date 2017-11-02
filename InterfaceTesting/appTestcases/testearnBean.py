@@ -25,10 +25,9 @@ class DailySignTest(unittest.TestCase):
         u"测试每日签到"
         base_url = self.sheet1.cell_value(14,2)
         uid = str(math.floor(self.sheet1.cell_value(14,4)))
-        appversion = self.dict["version"]
         params ={
             "uid":uid,
-            "appversion":appversion
+            "appversion":self.common_method.version
         }
         response = requests.get(base_url,params=params)
         result = json.loads(response.content)
@@ -75,8 +74,8 @@ class DailySignTest(unittest.TestCase):
         lon = result_shopSignlist["data"]["shopSignList"][shop_list]["lon"]  # 从签到列表获取经纬度
         lat = result_shopSignlist["data"]["shopSignList"][shop_list]["lat"]
         uid = str (math.floor (self.sheet1.cell_value (16, 4)))
-        shopId = str (result_shopSignlist["data"]["shopSignList"][shop_list]["shopid"])
-        cityId = str (math.floor (self.sheet1.cell_value (16, 5)))  # 从签到列表获取shopid
+        shopId = str(result_shopSignlist["data"]["shopSignList"][shop_list]["shopid"])
+        cityId = str(math.floor (self.sheet1.cell_value (16, 5)))  # 从签到列表获取shopid
         os = self.dict["os"]
         devcode = self.dict["version"]
         timestamp = self.dict["timestamp"]
@@ -129,7 +128,7 @@ class DailySignTest(unittest.TestCase):
         os = self.dict["os"]
         timestamp = self.dict["timestamp"]
         pageSize = "30"
-        usertype ="1"     #预埋参数，暂未使用
+        usertype ="1"     #预留参数，暂未使用
         uid = str(math.floor(self.sheet1.cell_value(17,4)))
         cityid = str(math.floor(self.sheet1.cell_value(17,5)))
         lon = str(self.sheet1.cell_value(17,6))
