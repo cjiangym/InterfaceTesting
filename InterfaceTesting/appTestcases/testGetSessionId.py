@@ -4,7 +4,7 @@ import json
 import xlrd
 import math
 from InterfaceTesting.run_all_cases import Common_method
-from InterfaceTesting.appTestcases.testLogin import LoginTest
+
 
 #sessionId
 class SessionIdTest(unittest.TestCase):
