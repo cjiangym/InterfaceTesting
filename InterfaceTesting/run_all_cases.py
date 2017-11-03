@@ -1,11 +1,16 @@
 import json
+import smtplib
 import unittest
+import email
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 import HTMLTestRunner
 import time
 import xlrd
 import hashlib
 import sys
 import os
+
 #用于命令行执行时对所有路径进行搜索（pydev在运行时会把当前工程的所有文件夹路径都作为包的搜索路径，而命令行默认只是搜索当前路径）
 curPath = os.path.abspath(os.path.dirname(__file__))
 rootPath = os.path.split(curPath)[0]
@@ -17,22 +22,55 @@ def all_case():
     testcases = unittest.TestSuite()
     discover = unittest.defaultTestLoader.discover(case_dir,pattern="test*.py",top_level_dir=None)
     testcases.addTest(discover)
-    print(testcases)
     return testcases
 
 if __name__ == '__main__':
     #runner = unittest.TextTestRunner().run(all_case())
     testTime = time.strftime("%Y-%m-%d %H_%M_%S",time.localtime())
     #report_path = "E:\\iSmartGo\\InterfaceTesting\\Results\\" + testTime+ "-testResult.html"
-    report_path = curPath+"\\Results\\" +testTime+ "-testResult.html"
+    report_path = curPath+"\\report\\" +testTime+ "-testreport.html"
     fp = open(report_path, "wb")
-    runner = HTMLTestRunner.HTMLTestRunner(stream=fp, title=u"自动化接口测试报告",description=u"用例执行情况：")
+    timestamp = time.strftime ("%Y%m%d%H%M", time.localtime ())
+    runner = HTMLTestRunner.HTMLTestRunner(stream=fp, title=u"接口测试报告"+timestamp,description=u"用例执行情况：")
     runner.run(all_case())
     fp.close()
+    #---------生成测试报告后发送邮件-----------#
+    smtpserver = "smtp.163.com"
+    port = 0
+    sender = "cjiangym@163.com"
+    psw = "jym617609"
+    receiver = "cassiejiang@ismartgo.com"
+    #receiver = "testdept@ismartgo.com"
+    # ----------2.编辑邮件的内容------
+    # 读文件
+    file_path = report_path
+    with open(file_path, "rb") as fp:
+        mail_body = fp.read()
+    msg = MIMEMultipart()
+    msg["from"] = sender           # 发件人
+    msg["to"] = receiver           # 收件人
+    msg["subject"] = "接口测试报告"+timestamp         # 主题
+    # 正文
+    body = MIMEText(mail_body, "html", "utf-8")
+    msg.attach(body)
+    # 附件
+    att = MIMEText(mail_body, "base64", "utf-8")
+    att["Content-Type"] = "application/octet-stream"
+    att["Content-Disposition"] = 'attachment; filename="test_report.html"'
+    msg.attach(att)
+    # ----------3.发送邮件------
+    try:
+        smtp = smtplib.SMTP()
+        smtp.connect(smtpserver)     # 连服务器
+        smtp.login(sender, psw)
+    except:
+        smtp = smtplib.SMTP_SSL(smtpserver, port)
+        smtp.login(sender, psw)     # 登录
+    smtp.sendmail(sender, receiver, msg.as_string()) # 发送
+    smtp.quit()
 
 #通用方法
 class Common_method():
-
     version = "401000"
     os = "iOS"
     devcode = "e895ec8c-6c18-4a27-a509-328cd252b6fa"

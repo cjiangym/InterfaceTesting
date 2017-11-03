@@ -61,26 +61,36 @@ class ExchangegiftTest(unittest.TestCase):
         base_url = self.sheet1.cell_value(27,2)
         uid = self.sheet1.cell_value(27,4)
         giftId = self.sheet1.cell_value(27,5)
+        giftType = "1"
+        contactNumber = self.sheet1.cell_value(27,7)
+        buyNumber =  self.sheet1.cell_value (27,8)
+        key_list = [giftId,giftType,contactNumber,uid,buyNumber]
+        key = self.common_method.get_key(key_list)
         params = {
-            "address" : self.sheet1.cell_value(),
-            "giftType" : "1",
-            "city_id" : self.sheet1.cell_value(),
-            "contactNumber" : self.sheet1.cell_value(),
-            "city" :self.sheet1.cell_value(),
-            "buyNumber" : self.sheet1.cell_value(),
-            "timestamp" : self.sheet1.cell_value(),
-            "province_id" : self.sheet1.cell_value(),
-            "province" : self.sheet1.cell_value(),
-            "district_id" :self.sheet1.cell_value(),
-            "os" : self.sheet1.cell_value(),
-            "deliveryAddress" :self.sheet1.cell_value(),
-            "devcode" : self.sheet1.cell_value(),
-            "town_id" : self.sheet1.cell_value(),
-            "contactPerson" :self.sheet1.cell_value(),
-            "town" :self.sheet1.cell_value()
-            "key" :
-            "giftId":self.sheet1.cell_value()
-            "district" :self.sheet1.cell_value()
-            "uid" :
+            "uid": uid,
+            "giftId": giftId,
+            "contactPerson": self.sheet1.cell_value (27, 6),
+            "contactNumber": contactNumber,
+            "buyNumber": buyNumber,
+            "province": self.sheet1.cell_value (27, 9),
+            "province_id": self.sheet1.cell_value (27, 10),
+            "city": self.sheet1.cell_value (27, 11),
+            "city_id": self.sheet1.cell_value (27, 12),
+            "district": self.sheet1.cell_value (27, 13),
+            "district_id": self.sheet1.cell_value (27, 14),
+            "town": self.sheet1.cell_value (27, 15),
+            "town_id": self.sheet1.cell_value (27, 16),
+            "deliveryAddress": self.sheet1.cell_value (27, 17),
+            "address" : self.sheet1.cell_value(27,18),
+            "giftType" : giftType,
+            "key" : key
         }
+        response = requests.get(base_url,params=params)
+        self.assertEqual(response.status_code,200)
+        result = json.loads(response.content)
+        self.assertEqual(result["status"],10001)
+        gift_numbet = result["data"]["giftnumber"]
+        self.assertNotEqual(result["data"]["giftnumber"],None)
+
+
 
