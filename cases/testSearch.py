@@ -5,10 +5,8 @@ import xlrd
 import hashlib
 import math
 import  datetime
-
 from xlrd import xldate_as_tuple
-
-from InterfaceTesting.run_all_cases import Common_method
+from common.common_method import Common_method
 
 
 #搜索促销信息商品、搜索网购赚商品，搜索零售商（我的关注页面），搜索礼品

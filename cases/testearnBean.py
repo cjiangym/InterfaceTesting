@@ -6,12 +6,12 @@ import hashlib
 import math
 import  datetime
 from xlrd import xldate_as_tuple
-from InterfaceTesting.run_all_cases import Common_method
+from common.common_method import Common_method
 
 
 class DailySign_shopSign_goodsScanTest(unittest.TestCase):
 
-    common_method = Common_method ()
+    common_method = Common_method()
     sheet1 = common_method.get_excle_sheet1 ()
     sheet2 = common_method.get_excle_sheet2()
     dict = common_method.get_common_params()

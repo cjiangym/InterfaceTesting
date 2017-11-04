@@ -4,8 +4,8 @@ import json
 import xlrd
 import hashlib
 import math
-from InterfaceTesting.run_all_cases import Common_method
-from InterfaceTesting.commonClass.login import Login
+from common.common_method import Common_method
+from common.login import Login
 
 
 #手机号登录、微信登录测试

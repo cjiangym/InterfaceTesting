@@ -6,7 +6,7 @@ import hashlib
 import math
 import  datetime
 from xlrd import xldate_as_tuple
-from InterfaceTesting.run_all_cases import Common_method
+from common.common_method import Common_method
 
 class ExchangegiftTest(unittest.TestCase):
     common_method = Common_method()
