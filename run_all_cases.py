@@ -7,6 +7,7 @@ import hashlib
 import sys
 import os
 from config.readConfig import Readconfig
+from common.common_method import Common_method
 #用于命令行执行时对所有路径进行搜索（pydev在运行时会把当前工程的所有文件夹路径都作为包的搜索路径，而命令行默认只是搜索当前路径）
 curPath = os.path.abspath(os.path.dirname(__file__))
 rootPath = os.path.split(curPath)[0]
@@ -21,20 +22,13 @@ def all_case():
     print(testcases)
     return testcases
 
-def get_reportpath():
-    testTime = time.strftime("%Y%m%d%H%M%S", time.localtime())
-    report_path = curPath + "\\report\\" + testTime + "-testResult.html"
-    return report_path
-
-
 if __name__ == '__main__':
 
     #使用HTMLTestRunner生成测试报告
-    testTime = time.strftime("%Y%m%d%H%M%S",time.localtime())
-    report_path = get_reportpath()
+    report_path = Common_method().get_reportpath()
         #curPath+"\\report\\" +testTime+ "-testResult.html"
     fp = open(report_path, "wb")
-    runner = HTMLTestRunner.HTMLTestRunner(stream=fp, title=u"APP接口测试报告"+testTime,description=u"用例执行情况：")
+    runner = HTMLTestRunner.HTMLTestRunner(stream=fp, title=u"APP接口测试报告",description=u"用例执行情况：")
     runner.run(all_case())
     fp.close()
     #-----发送邮件----------------------#

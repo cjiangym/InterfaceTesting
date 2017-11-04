@@ -3,7 +3,7 @@ import math
 import _md5
 import hashlib
 import requests
-from InterfaceTesting.run_all_cases import Common_method
+from common.common_method import Common_method
 
 class Login():
 

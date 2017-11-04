@@ -12,9 +12,8 @@ rootPath = os.path.split(curPath)[0]
 sys.path.append(rootPath)
 
 
-
-
 class Common_method():
+    testTime = time.strftime("%Y-%m-%d-%H-%M", time.localtime())   #测试报告时间
     version = "401000"
     os = "iOS"
     devcode = "e895ec8c-6c18-4a27-a509-328cd252b6fa"
@@ -31,8 +30,7 @@ class Common_method():
 
     #测试用例excel第一个表格
     def get_excle_sheet1(self):
-        # xlx_data = xlrd.open_workbook ("E:\\iSmartGo\\InterfaceTesting\\Cases.xlsx")
-        path = curPath + "\\Cases.xlsx"
+        path = rootPath + "\\cases.xlsx"
         xlx_data = xlrd.open_workbook (path)
         # 取第一个表格
         sheet1 = xlx_data.sheet_by_index (0)
@@ -40,16 +38,14 @@ class Common_method():
 
         # 测试用例excel第二个表格
     def get_excle_sheet2(self):
-        #xlx_data = xlrd.open_workbook ("E:\\iSmartGo\\InterfaceTesting\\Cases.xlsx")
-        path = curPath +"\\Cases.xlsx"
+        path = rootPath +"\\cases.xlsx"
         xlx_data = xlrd.open_workbook(path)
         sheet2 = xlx_data.sheet_by_index(1)
         return sheet2
 
         # 测试用例excel第三个表格
     def get_excle_sheet3(self):
-        # xlx_data = xlrd.open_workbook ("E:\\iSmartGo\\InterfaceTesting\\Cases.xlsx")
-        path = curPath + "\\Cases.xlsx"
+        path = rootPath + "\\cases.xlsx"
         xlx_data = xlrd.open_workbook(path)
         sheet3 = xlx_data.sheet_by_index(2)
         return sheet3
@@ -62,6 +58,12 @@ class Common_method():
         pre_key = pre_key+"#smartg02ol5"
         key = hashlib.md5(pre_key.encode("utf-8")).hexdigest()
         return key
+
+    #获取测试报告
+    def get_reportpath(self):
+        report_path = rootPath + "\\report\\" + self.testTime + "-testResult.html"
+        return report_path
+
 '''
     #将传入的参数拼接成接口地址
     def get_url(self,list1,list2):   #list1为固定值：version，os,devcode等；list2为动态值version的值，os的值，devcode的值
