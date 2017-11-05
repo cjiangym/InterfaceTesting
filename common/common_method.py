@@ -13,7 +13,7 @@ sys.path.append(rootPath)
 
 
 class Common_method():
-    testTime = time.strftime("%Y-%m-%d-%H-%M", time.localtime())   #测试报告时间
+    testTime = time.strftime("%Y-%m-%d", time.localtime())   #测试报告时间
     version = "401000"
     os = "iOS"
     devcode = "e895ec8c-6c18-4a27-a509-328cd252b6fa"
