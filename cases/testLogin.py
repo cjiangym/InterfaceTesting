@@ -15,7 +15,7 @@ class LoginTest(unittest.TestCase):
     login = Login()
     phone = sheet1.cell_value (5, 5)
     psw = sheet1.cell_value (5, 6)
-    response = login.phone_login (phone, psw)          #手机号登录返回结果
+    result = login.phone_login (phone, psw)          #手机号登录返回结果
 
     def setUp(self):
         pass
@@ -27,19 +27,14 @@ class LoginTest(unittest.TestCase):
 
     def test_login_01(self):
         u"测试手机号码登录，正确的手机号、密码"
-        if self.response ==200:
-            result = json.loads (self.response.content)
-            if result["data"]:
-                print(self.response.url)
-                data = result["data"]
-                status = result["status"]
-                response_mobile = data["user"]["mobile"]
-                self.assertEqual(status, 10001)
-                print(result)
-            else:
-                self.assertEqual(result["msg"],0)
+        if self.result["data"]:
+            data = self.result["data"]
+            status = self.result["status"]
+            response_mobile = data["user"]["mobile"]
+            self.assertEqual(status, 10001)
+            print(self.result)
         else:
-            self.assertEqual(self.response.status_code,200)
+            self.assertEqual(self.result["msg"],0)
 
     def test_login_02(self):
         u"测试手机号码登录，错误密码登录"

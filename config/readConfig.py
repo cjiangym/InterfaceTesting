@@ -14,7 +14,7 @@ class Readconfig():
         port = 0
         sender = "cjiangym@163.com"
         psw = "jym617609"
-        receiver = "705599396@qq.com"
+        receiver = "cassiejiang@ismartgo.com"
         # ----------2.编辑邮件的内容-----------#
 
         # 读文件

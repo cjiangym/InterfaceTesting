@@ -3,7 +3,9 @@ import math
 import _md5
 import hashlib
 import requests
+import json
 from common.common_method import Common_method
+
 
 class Login():
 
@@ -33,7 +35,15 @@ class Login():
             "uid": userId
         }
         response = requests.get(base_url, params=params)
-        return response
+        result = json.loads(response.content)
+        response_dict ={
+            "user_id":result["data"]["user"]["id"],
+            "authkey" : result["data"]["authkey"],
+            "data" :result["data"],
+            "msg" :result["msg"],
+            "status" :result["status"]
+        }
+        return response_dict
 
 
     #微信登录
