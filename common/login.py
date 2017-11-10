@@ -37,14 +37,11 @@ class Login():
         response = requests.get(base_url, params=params)
         result = json.loads(response.content)
         response_dict ={
-            "user_id":result["data"]["user"]["id"],
-            "authkey" : result["data"]["authkey"],
             "data" :result["data"],
             "msg" :result["msg"],
             "status" :result["status"]
         }
         return response_dict
-
 
     #微信登录
     def wx_login(self,thirdId):
@@ -66,5 +63,13 @@ class Login():
             "timestamp": timestamp,
             "key": key
         }
-        response = requests.get (base_url, params=params)
-        return  response
+        response_wxlogin = requests.get (base_url, params=params)
+        result_wxlogin = json.loads(response_wxlogin.content)
+        response_dict = {
+            "data": result_wxlogin["data"],
+            "msg": result_wxlogin["msg"],
+            "status": result_wxlogin["status"]
+        }
+        return  response_dict
+
+

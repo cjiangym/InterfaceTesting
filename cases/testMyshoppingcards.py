@@ -29,10 +29,10 @@ class ShoppingCardsTest(unittest.TestCase):
     def get_shoppingCardList(self):
         base_url = self.sheet2.cell_value (4, 2)
         if self.result_login["data"]:
-            userid = str (self.result_login["user_id"])  # 从登录接口获取返回的用户id
+            userid = str (self.result_login["data"]["user"]["id"])  # 从登录接口获取返回的用户id
             userkey = self.result_login["data"]["user"]["mobile"]  # 从登录接口获取返回的Mobile
             page = str (math.floor (self.sheet2.cell_value (4, 8)))
-            authkey = self.result_login["authkey"]
+            authkey = self.result_login["data"]["authkey"]
             date = xldate_as_tuple (self.sheet2.cell_value (4, 7), 0)
             opdate = str (datetime.datetime(*date))
             type = (self.sheet2.cell_value (4, 9))
@@ -121,10 +121,10 @@ class ShoppingCardsTest(unittest.TestCase):
         u"根据零售商id获取购物卡列表"
         base_url = self.sheet2.cell_value (5, 2)
         if self.result_login["data"]:
-            userid =str(self.result_login["user_id"])  # 用户id从登录接口获取
+            userid =str(self.result_login["data"]["user"]["id"])  # 用户id从登录接口获取
             userkey = self.result_login["data"]["user"]["mobile"] # Mobile或UnionID
             page = "1"
-            authkey = self.result_login["authkey"]
+            authkey = self.result_login["data"]["authkey"]
             date = xldate_as_tuple(self.sheet2.cell_value(5, 7), 0)
             opdate = str(datetime.datetime (*date))
             key_list = [userid, userkey, opdate, page,authkey]

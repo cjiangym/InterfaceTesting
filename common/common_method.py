@@ -57,6 +57,14 @@ class Common_method():
         sheet4 = xlx_data.sheet_by_index (3)
         return sheet4
 
+    # 测试用例excel第五个表格
+    def get_excle_sheet5(self):
+        path = rootPath + "\\cases.xlsx"
+        xlx_data = xlrd.open_workbook (path)
+        # 取第一个表格
+        sheet5 = xlx_data.sheet_by_index(4)
+        return sheet5
+
     #字符串加密
     def get_key(self,list_key):
         pre_key=list_key[0]

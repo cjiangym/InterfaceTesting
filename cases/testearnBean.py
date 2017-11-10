@@ -20,13 +20,13 @@ class DailySign_shopSign_goodsScanTest(unittest.TestCase):
 
     def setUp(self):
         pass
-    def setUp(self):
+    def tearDown(self):
         pass
 
     def test_dailySign(self):
         u"测试每日签到"
         base_url = self.sheet1.cell_value(14,2)
-        uid = str(math.floor(self.sheet1.cell_value(14,4)))
+        uid = self.sheet1.cell_value(14,4)
         params ={
             "uid":uid,
             "appversion":self.common_method.version
@@ -68,10 +68,10 @@ class DailySign_shopSign_goodsScanTest(unittest.TestCase):
                 base_url = self.sheet1.cell_value (16, 2)
                 shop_list = int(self.sheet1.cell_value (16, 8))   # 去签到列表的第x个数组数据
                 beacon = "0"                                    # 签到beacon，没有则为0
-                uid = str(result_login["user_id"])                #从登录获取
+                uid = str(result_login["data"]["user"]["id"])                #从登录获取
                 shopId = str(result_shopSignlist["data"]["shopSignList"][shop_list]["shopid"])
                 timestamp = self.common_method.timestamp
-                authkey = result_login["authkey"]                #从登录获取
+                authkey = result_login["data"]["authkey"]                #从登录获取
                 key_list = [uid, shopId, beacon, timestamp, authkey]
                 key = self.common_method.get_key (key_list)
                 params = {
@@ -99,7 +99,7 @@ class DailySign_shopSign_goodsScanTest(unittest.TestCase):
             result = json.loads(response.content)
             print(result)
             if result["data"]:
-                shop_list =self.sheet1.cell_value (16, 8)          # 取签到列表的第x个数组数据,用于验证签到结果
+                shop_list =int(self.sheet1.cell_value (16, 8))         # 取签到列表的第x个数组数据,用于验证签到结果
                 self.assertEqual(result["status"],10001)
                 self.assertNotEqual(len(result["data"]),0)
                 self.assertEqual(result_shoplist["data"]["shopSignList"][shop_list]["userIsSign"],"Y")   #签到列表已签到，userIsSign=Y
@@ -124,12 +124,12 @@ class DailySign_shopSign_goodsScanTest(unittest.TestCase):
         phone = self.sheet1.cell_value(17,4)
         psw = self.sheet1.cell_value (17, 5)
         result_login = self.login.phone_login(phone=phone,psw=psw)
-        uid = str(result_login["user_id"])
+        uid = str(result_login["data"]["user"]["id"])
         cityid = self.sheet1.cell_value(17,6)
         lon = str(self.sheet1.cell_value(17,7))
         lat = str(self.sheet1.cell_value(17,8))
         pages = self.sheet1.cell_value (17, 9)
-        authkey = result_login["authkey"]
+        authkey = result_login["data"]["authkey"]
         key_list = [uid,cityid,lon,lat,timestamp,authkey]
         key = self.common_method.get_key(key_list)
         params = {
@@ -151,9 +151,9 @@ class DailySign_shopSign_goodsScanTest(unittest.TestCase):
         phone = self.sheet1.cell_value (18, 4)
         psw = self.sheet1.cell_value (18, 5)
         result_login = self.login.phone_login (phone, psw)
-        uid = str (result_login["user_id"])
+        uid = str (result_login["data"]["user"]["id"])
         shopid = self.sheet1.cell_value (18, 6)
-        authkey = result_login["authkey"]
+        authkey = result_login["data"]["authkey"]
         barcode = self.sheet1.cell_value (18, 7)
         timestamp = self.dict["timestamp"]
         key_list = [shopid, uid, barcode, timestamp, authkey]
