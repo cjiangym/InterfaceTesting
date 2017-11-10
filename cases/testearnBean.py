@@ -102,7 +102,7 @@ class DailySign_shopSign_goodsScanTest(unittest.TestCase):
                 shop_list =int(self.sheet1.cell_value (16, 8))         # 取签到列表的第x个数组数据,用于验证签到结果
                 self.assertEqual(result["status"],10001)
                 self.assertNotEqual(len(result["data"]),0)
-                self.assertEqual(result_shoplist["data"]["shopSignList"][shop_list]["userIsSign"],"Y")   #签到列表已签到，userIsSign=Y
+                #self.assertEqual(result_shoplist["data"]["shopSignList"][shop_list]["userIsSign"],"Y")   #签到列表已签到，userIsSign=Y
             else:
                 self.assertEqual(result["status"],20007)
                 self.assertEqual(result["msg"],"每个商店一天只能签到一次哦")
@@ -204,9 +204,9 @@ class DailySign_shopSign_goodsScanTest(unittest.TestCase):
         phone = self.sheet1.cell_value (18, 4)
         psw = self.sheet1.cell_value (18, 5)
         result_login = self.login.phone_login (phone, psw)
-        uid = str (result_login["user_id"])
+        uid = str (result_login["data"]["user"]["id"])
         shopid = self.sheet1.cell_value (18, 6)
-        authkey = result_login["authkey"]
+        authkey = result_login["data"]["authkey"]
         barcode = self.sheet1.cell_value (18, 7)+"123456"
         timestamp = self.dict["timestamp"]
         appversion = self.dict["version"]
