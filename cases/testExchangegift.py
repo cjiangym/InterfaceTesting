@@ -7,10 +7,12 @@ import math
 import  datetime
 from xlrd import xldate_as_tuple
 from common.common_method import Common_method
+from cases.testCoupon import CouponTest
 
 class ExchangegiftTest(unittest.TestCase):
     common_method = Common_method()
     sheet1 = common_method.get_excle_sheet1()
+    coupon = CouponTest()
 
     def setUp(self):
         pass
@@ -147,7 +149,7 @@ class ExchangegiftTest(unittest.TestCase):
             "address": "乐天创意园",
             "giftType": gift_type,
             "pay_money": 0.58,
-            "couponids": "UuUmkq3ZTg0=",
+            "couponids":"03dCrSJ6G+4=",
             "key": key
         }
         response = requests.get(base_url,params=params)
@@ -188,6 +190,7 @@ class ExchangegiftTest(unittest.TestCase):
         }
         response = requests.get (base_url, params=params)
         result = json.loads (response.content)
+        self.assertEqual(result["msg"],"下单失败，请稍后重试")
     '''
     def test_coupon_exchange(self):
         u"测试条码兑换"

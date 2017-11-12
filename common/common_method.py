@@ -6,6 +6,7 @@ import xlrd
 import hashlib
 import sys
 import os
+import requests
 #用于命令行执行时对所有路径进行搜索（pydev在运行时会把当前工程的所有文件夹路径都作为包的搜索路径，而命令行默认只是搜索当前路径）
 curPath = os.path.abspath(os.path.dirname(__file__))
 rootPath = os.path.split(curPath)[0]
@@ -78,6 +79,7 @@ class Common_method():
     def get_reportpath(self):
         report_path = rootPath + "\\report\\" + self.testTime + "-testResult.html"
         return report_path
+
 
 '''
     #将传入的参数拼接成接口地址
