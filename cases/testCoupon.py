@@ -13,6 +13,7 @@ from common.login import Login
 class CouponTest(unittest.TestCase):
     common_method = Common_method()
     sheet4 = common_method.get_excle_sheet4()
+    sheet5 = common_method.get_excle_sheet5()
     login = Login()
     def setUp(self):
         pass
@@ -31,7 +32,10 @@ class CouponTest(unittest.TestCase):
             "timestamp" :timestamp,
             "key" :key,
             "status": self.sheet4.cell_value(2,6),
-            "page": "1"
+            "page": "1",
+            "appversion": self.common_method.version,
+            "os" :self.common_method.os,
+            "devcode" :self.common_method.devcode
         }
         response_list = requests.post(base_url,data=postdata,verify=False)
         return  response_list
@@ -52,6 +56,31 @@ class CouponTest(unittest.TestCase):
         result = json.loads (response.content)
         self.assertEqual (result["status"], 10001)
         self.assertNotEqual (len (result["data"]), 0)
+
+    def test_mygiftcoupons(self):
+        u"测试我的兑换代金券列表"
+        base_url = self.sheet4.cell_value(4,2)
+        phone = self.sheet4.cell_value(4,4)
+        psw = self.sheet4.cell_value(4,5)
+        login_data = self.login.phone_login(phone,psw)
+        uid = str(login_data["data"]["user"]["id"])
+        authkey = login_data["data"]["authkey"]
+        timestamp = self.common_method.timestamp
+        key_list = [uid,timestamp,authkey]
+        key = self.common_method.get_key(key_list)
+        params = {
+            "uid" :uid,
+            "retailid": self.sheet4.cell_value (4, 6),
+            "status": self.sheet4.cell_value (4, 7),
+            "type" :self.sheet4.cell_value(4,8),
+            "page" :self.sheet4.cell_value(4,9),
+            "timestamp": timestamp,
+            "key" :key
+        }
+        response = requests.post(base_url,params=params,verify=False)
+        result = json.loads(response.content)
+        print(response)
+        print(result)
 
     def test_couponDetail(self):
         u"测试优惠券详情"

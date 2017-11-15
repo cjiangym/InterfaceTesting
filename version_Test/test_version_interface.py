@@ -19,42 +19,16 @@ class CouponTest(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def test_mygiftcoupons(self):
-        u"测试我的优惠券列表"
-        base_url = self.sheet5.cell_value(2,2)
-        phone = self.sheet5.cell_value(2,4)
-        psw = self.sheet5.cell_value(2,5)
-        login_data = self.login.phone_login(phone,psw)
-        uid = str(login_data["data"]["user"]["id"])
-        authkey = login_data["data"]["authkey"]
-        timestamp = self.common_method.timestamp
-        key_list = [uid,timestamp,authkey]
-        key = self.common_method.get_key(key_list)
-        params = {
-            "uid" :uid,
-            "retailid": self.sheet5.cell_value (2, 6),
-            "status": self.sheet5.cell_value (2, 7),
-            "type" :self.sheet5.cell_value(2,8),
-            "page" :self.sheet5.cell_value(2,9),
-            "timestamp": timestamp,
-            "key" :key
-        }
-        response = requests.get(base_url,params=params)
-        result = json.loads(response.content)
-        print(response)
-        print(result)
-
     def test_sendcoupons(self):
         u"测试发送代金券"
         base_url = self.sheet5.cell_value(4,2)
         phone = self.sheet5.cell_value(4, 4)
         psw = self.sheet5.cell_value(4, 5)
         login_data = self.login.phone_login(phone, psw)
-        uid = str (login_data["data"]["user"]["id"])
+        uid = str(login_data["data"]["user"]["id"])
         authkey = login_data["data"]["authkey"]
         #uid = "1799100"                                 #uid = "15500221"
         #authkey = "xpeRm32QW17pu3FZ"                     #authkey = "GWtk7sLgTvFHjkyB"
-
         timestamp = self.common_method.timestamp
         key_list = [uid,timestamp,authkey]
         key = self.common_method.get_key(key_list)
@@ -66,7 +40,7 @@ class CouponTest(unittest.TestCase):
             "timestamp" :timestamp,
             "key" :key
         }
-        response = requests.get(base_url,params=params)
+        response = requests.post(base_url,params=params,verify=False)
         result = json.loads(response.content)
         self.assertEqual(result["status"],10001)
         self.assertNotEqual(result["data"]["coupon_num"],"")

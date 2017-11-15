@@ -126,7 +126,7 @@ class ExchangegiftTest(unittest.TestCase):
         base_url = self.sheet1.cell_value (30, 2)
         uid = self.sheet1.cell_value (30, 5)
         giftid = self.sheet1.cell_value (30, 4)
-        gift_type ="1"
+        gift_type ="2"
         contactNumber = "13450244170"
         buyNumber = "1"
         key_list = [giftid, gift_type, contactNumber, uid, buyNumber]
@@ -148,7 +148,7 @@ class ExchangegiftTest(unittest.TestCase):
             "deliveryAddress": "广东广州天河区五山",
             "address": "乐天创意园",
             "giftType": gift_type,
-            "pay_money": 0.58,
+            "pay_money": 7.98,
             "couponids":"03dCrSJ6G+4=",
             "key": key
         }
