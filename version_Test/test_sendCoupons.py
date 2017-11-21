@@ -21,9 +21,9 @@ class CouponTest(unittest.TestCase):
 
     def test_sendcoupons(self):
         u"测试发送代金券"
-        base_url = self.sheet5.cell_value(4,2)
-        phone = self.sheet5.cell_value(4, 4)
-        psw = self.sheet5.cell_value(4, 5)
+        base_url = "https://sv.ismartgo.cn/couponsv/appcoupon/sendActivityCoupon.do"
+        phone = "13450244170"
+        psw = "123456"
         login_data = self.login.phone_login(phone, psw)
         uid = str(login_data["data"]["user"]["id"])
         authkey = login_data["data"]["authkey"]
@@ -36,7 +36,7 @@ class CouponTest(unittest.TestCase):
             "uid" : uid,
             "couponType" :1,
             "discountVal" :"9.99",
-            "scene" :"jmg",
+            "scene" :"test_jmg",
             "timestamp" :timestamp,
             "key" :key
         }

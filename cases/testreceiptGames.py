@@ -127,6 +127,7 @@ class ReceiptGamesTests(unittest.TestCase):
         base_url = self.sheet3.cell_value (4, 2)
         dict_zbgame = self.get_zbgame()  # 内测的众包活动活动
         response_receiptList = self.get_receiptList()
+        self.assertEqual(response_receiptList.status_code,200)
         result_receiptList = json.loads (response_receiptList.content)  # 不是内测的活动
         devcode = self.common_method.devcode
         uid = self.sheet3.cell_value (4, 4)

@@ -8,6 +8,7 @@ import  datetime
 import re
 from xlrd import xldate_as_tuple
 from common.common_method import Common_method
+from common.getRetails import get_Retails
 
 class PromotionTest(unittest.TestCase):
     common_method = Common_method()
@@ -66,8 +67,7 @@ class PromotionTest(unittest.TestCase):
 
     def test_subscribe(self):
         u"测试关注零售商"
-        search = SearchTest()
-        retail_search = search.get_Retails()
+        retail_search = get_Retails(self)
         retail_result = json.loads(retail_search.content)
         base_url = self.sheet2.cell_value(9,2)
         uid =  self.sheet2.cell_value (9, 4)

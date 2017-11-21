@@ -53,6 +53,7 @@ class CouponTest(unittest.TestCase):
         uid = str (login_data["data"]["user"]["id"])
         authkey = login_data["data"]["authkey"]
         response = self.get_myconponList(uid,authkey)
+        self.assertEqual(response.status_code,200)
         result = json.loads (response.content)
         self.assertEqual (result["status"], 10001)
         self.assertNotEqual (len (result["data"]), 0)
@@ -78,6 +79,7 @@ class CouponTest(unittest.TestCase):
             "key" :key
         }
         response = requests.post(base_url,params=params,verify=False)
+        self.assertEqual(response.status_code,200)
         result = json.loads(response.content)
         print(response)
         print(result)
@@ -110,6 +112,7 @@ class CouponTest(unittest.TestCase):
                 "uuid" : uuid
             }
             response = requests.post(base_url,params = params,verify = False)
+            self.assertEqual(response.status_code,200)
             result = json.loads(response.content)
         else:
             self.assertEqual(uid,"该用户没有优惠券,无法查看优惠券详情")

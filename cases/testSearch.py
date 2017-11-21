@@ -7,6 +7,7 @@ import math
 import  datetime
 from xlrd import xldate_as_tuple
 from common.common_method import Common_method
+from common.getRetails import get_Retails
 
 
 #搜索促销信息商品、搜索网购赚商品，搜索零售商（我的关注页面），搜索礼品
@@ -126,26 +127,11 @@ class SearchTest(unittest.TestCase):
             self.assertEqual(result_search["status"],10001)
             self.assertNotEqual(len(result_search["data"]),0)
 
-    def get_Retails(self):
-        base_url_search = self.sheet2.cell_value (6, 2)  # 搜索促销商店
-        params_search = {
-            "districtid": "-2",  # 默认值
-            "shoptypeid": "-1",  # 默认值
-            "townid": "-2",  # 默认值
-            "distance": "",
-            "cityid": self.sheet2.cell_value (6, 5),
-            "lon": self.sheet2.cell_value (6, 7),
-            "lat": self.sheet2.cell_value (6, 8),
-            "nextpage": "",
-            "keyword": self.sheet2.cell_value (6, 6),
-            "userid": self.sheet2.cell_value (6, 4)
-        }
-        response_search = requests.get (base_url_search, params=params_search)
-        return response_search
+
 
     def test_searchRetails(self):
         u"测试搜索零售商（关注零售商功能）"
-        response_search = self.get_Retails()
+        response_search = get_Retails(self)
         self.assertEqual (response_search.status_code, 200)
         result_search = json.loads (response_search.content)
         print (response_search.url)
