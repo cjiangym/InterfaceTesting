@@ -9,6 +9,7 @@ import re
 from xlrd import xldate_as_tuple
 from common.common_method import Common_method
 from common.login import Login
+from common.getKey import Key
 
 class CouponTest(unittest.TestCase):
     common_method = Common_method()
@@ -26,7 +27,7 @@ class CouponTest(unittest.TestCase):
         authkey = authkey
         timestamp = self.common_method.timestamp
         key_list = [uid,timestamp,authkey]
-        key = self.common_method.get_key(key_list)
+        key = Key.get_key(self,key_list)
         postdata ={
             "uid" :uid,
             "timestamp" :timestamp,
@@ -68,7 +69,7 @@ class CouponTest(unittest.TestCase):
         authkey = login_data["data"]["authkey"]
         timestamp = self.common_method.timestamp
         key_list = [uid,timestamp,authkey]
-        key = self.common_method.get_key(key_list)
+        key = Key.get_key(self,key_list)
         params = {
             "uid" :uid,
             "retailid": self.sheet4.cell_value (4, 6),
@@ -102,7 +103,7 @@ class CouponTest(unittest.TestCase):
             couponnum = result_couponlist["data"]["items"][0]["couponnum"]
             timestamp = self.common_method.timestamp
             key_list = [uid,timestamp,authkey]
-            key = self.common_method.get_key(key_list)
+            key = Key.get_key(self,key_list)
             uuid = result_couponlist["data"]["items"][0]["uuid"]
             params = {
                 "couponnum" :couponnum,

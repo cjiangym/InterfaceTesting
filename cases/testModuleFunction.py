@@ -8,6 +8,7 @@ import  datetime
 import re
 from xlrd import xldate_as_tuple
 from common.common_method import Common_method
+from common.getKey import Key
 
 
 #---------------------首页功能按钮，功能模块，精明豆页功能模块，我的页面功能按钮--------------------#
@@ -26,8 +27,8 @@ class HomebuttonListTest(unittest.TestCase):
         base_url =self.sheet1.cell_value(46,2)
         timestamp = Common_method.timestamp
         type = "1"
-        key_list = [type,timestamp]
-        key = self.common_method.get_key(key_list)
+        list_key = [type,timestamp]
+        key = Key.get_key(self,list_key)
         params = {
             "appversion" :Common_method.version,
             "devcode" :Common_method.devcode,
@@ -48,8 +49,8 @@ class HomebuttonListTest(unittest.TestCase):
         base_url =self.sheet1.cell_value(46,2)
         timestamp = Common_method.timestamp
         type = "4"
-        key_list = [type,timestamp]
-        key = self.common_method.get_key(key_list)
+        list_key = [type,timestamp]
+        key = Key.get_key(self,list_key)
         params = {
             "appversion" :Common_method.version,
             "devcode" :Common_method.devcode,
@@ -71,8 +72,8 @@ class HomebuttonListTest(unittest.TestCase):
         uid = self.sheet1.cell_value(45,4)
         cityid = self.sheet1.cell_value(45,5)
         timestamp = self.common_method.timestamp
-        key_list = [uid,cityid,timestamp]
-        key = self.common_method.get_key(key_list)
+        list_key = [uid,cityid,timestamp]
+        key = Key.get_key(self,list_key)
         params = {
             "cityid":cityid,
             "key":key,

@@ -7,6 +7,7 @@ import math
 import  datetime
 from xlrd import xldate_as_tuple
 from common.common_method import Common_method
+from common.getKey import Key
 from common.getRetails import get_Retails
 
 
@@ -30,8 +31,8 @@ class SearchTest(unittest.TestCase):
         pageSize ="30"     #每页数量
         _sgts = self.commom_method.timestamp
         userkey = userkey = self.sheet1.cell_value(19,6)
-        key_list = [uid,_sgts,userkey]
-        _sgkey = self.commom_method.get_key(key_list)
+        list_key = [uid,_sgts,userkey]
+        _sgkey = Key.get_key(self,list_key)
         #获取接口地址
         params = {"searchName":searchName,"uid":uid,"page":page,"pageSize":pageSize,"_sgts":_sgts,"_sgkey":_sgkey}
         response = requests.get(base_url,params=params)

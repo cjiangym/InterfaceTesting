@@ -5,6 +5,7 @@ import hashlib
 import requests
 import json
 from common.common_method import Common_method
+from common.getKey import Key
 
 
 class Login():
@@ -53,7 +54,7 @@ class Login():
         os = self.common_method.os     # 操作系统
         timestamp = self.common_method.timestamp  # 时间戳
         list_key = [self.thirdid, devcode, timestamp]  # 字符串加密
-        key = self.common_method.get_key (list_key)
+        key = Key.get_key(self,list_key)
         params = {
             "thirdid": self.thirdid,
             "uid": uid,

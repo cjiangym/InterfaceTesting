@@ -66,15 +66,6 @@ class Common_method():
         sheet5 = xlx_data.sheet_by_index(4)
         return sheet5
 
-    #字符串加密
-    def get_key(self,list_key):
-        pre_key=list_key[0]
-        for key_value in list_key[1:]:
-            pre_key = pre_key+"#"+key_value
-        pre_key = pre_key+"#smartg02ol5"
-        key = hashlib.md5(pre_key.encode("utf-8")).hexdigest()
-        return key
-
     #获取测试报告
     def get_reportpath(self):
         report_path = rootPath + "\\report\\" + self.testTime + "-testResult.html"

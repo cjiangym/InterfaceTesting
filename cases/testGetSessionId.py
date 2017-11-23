@@ -39,10 +39,9 @@ class SessionIdTest(unittest.TestCase):
          "userkey":userkey
         }
         response = requests.get(base_url,params=params)
+        self.assertEqual(response.status_code,200)
         result = json.loads(response.content)
         print(response.url)
         print(result)
-        data = result["data"]
-        status = result["status"]
-        self.assertIn("expire",data)
-        self.assertEqual(status,10001)
+        self.assertIn("expire",result["data"])
+        self.assertEqual(result["status"],10001)

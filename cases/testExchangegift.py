@@ -8,6 +8,7 @@ import  datetime
 from xlrd import xldate_as_tuple
 from common.common_method import Common_method
 from cases.testCoupon import CouponTest
+from common.getKey import Key
 
 class ExchangegiftTest(unittest.TestCase):
     common_method = Common_method()
@@ -32,7 +33,7 @@ class ExchangegiftTest(unittest.TestCase):
             contactNumber = self.sheet1.cell_value(27,7)
             buyNumber =  self.sheet1.cell_value (27,8)
             key_list = [giftId,giftType,contactNumber,uid,buyNumber]
-            key = self.common_method.get_key(key_list)
+            key = Key.get_key (self,key_list)
             params = {
                 "uid": uid,
                 "giftId": giftId,
@@ -58,7 +59,7 @@ class ExchangegiftTest(unittest.TestCase):
             contactNumber = self.sheet1.cell_value (28, 6)
             buyNumber = self.sheet1.cell_value (28,7)
             key_list = [giftId, giftType, contactNumber, uid, buyNumber]
-            key = self.common_method.get_key (key_list)
+            key = Key.get_key (self,key_list)
             params = {
                 "buyNumber": buyNumber,
                 "contactNumber": contactNumber,
@@ -130,7 +131,7 @@ class ExchangegiftTest(unittest.TestCase):
         contactNumber = "13450244170"
         buyNumber = "1"
         key_list = [giftid, gift_type, contactNumber, uid, buyNumber]
-        key = self.common_method.get_key (key_list)
+        key = Key.get_key (self,key_list)
         params = {
             "uid": uid,
             "giftId": giftid,
@@ -166,7 +167,7 @@ class ExchangegiftTest(unittest.TestCase):
         contactNumber = "13450244170"
         buyNumber = "1"
         key_list = [giftid, gift_type, contactNumber, uid, buyNumber]
-        key = self.common_method.get_key (key_list)
+        key = Key.get_key (self,key_list)
         params = {
             "uid": uid,
             "giftId": giftid,

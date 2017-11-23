@@ -6,6 +6,7 @@ import hashlib
 import math
 from common.common_method import Common_method
 from common.login import Login
+from common.getKey import Key
 
 
 #手机号登录、微信登录测试
@@ -110,8 +111,8 @@ class LoginTest(unittest.TestCase):
             os = self.common_method.os
             timestamp = self.common_method.timestamp
             authkey = self.result["data"]["authkey"]
-            key_list = [uid,timestamp,authkey]
-            key = self.common_method.get_key(key_list)
+            list_key = [uid,timestamp,authkey]
+            key = Key.get_key(self,list_key)
             params = {
                 "uid":uid,
                 "usertype":usertype,

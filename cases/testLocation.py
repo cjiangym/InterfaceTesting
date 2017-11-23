@@ -5,6 +5,7 @@ import xlrd
 import hashlib
 import math
 from common.common_method import Common_method
+from common.getKey import Key
 
 #定位相关case
 class CityLocationTest(unittest.TestCase):
@@ -27,7 +28,7 @@ class CityLocationTest(unittest.TestCase):
         lat = str(self.sheet1.cell_value (3, 7))
         uid = str (math.floor (self.sheet1.cell_value (3, 4)))
         list_key = [uid, locationName, timestamp]       #加密key
-        key = self.common_method.get_key(list_key)
+        key = Key.get_key(self,list_key)
         params = {
             "appversion":appversion,
             "devcode":devcode,
@@ -49,13 +50,13 @@ class CityLocationTest(unittest.TestCase):
         u"测试获取所有城市"
         common_method = Common_method()
         base_url = self.sheet1.cell_value(4,2)
-        uid = str(math.floor(self.sheet1.cell_value(4,4)))
+        uid = self.sheet1.cell_value(4,4)
         appversion = self.dict["version"]
         devcode = self.dict["devcode"]
         os = self.dict["os"]
         timestamp = self.dict["timestamp"]
-        key_list = [timestamp]
-        key = common_method.get_key(key_list)
+        list_key = [timestamp]
+        key = Key.get_key(self,list_key)
         params = {
             "appversion":appversion,
             "devcode":devcode,

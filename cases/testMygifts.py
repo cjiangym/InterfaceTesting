@@ -7,6 +7,7 @@ import math
 import  datetime
 from xlrd import xldate_as_tuple
 from common.common_method import Common_method
+from common.getKey import Key
 
 
 class MygiftsTest(unittest.TestCase):
@@ -91,8 +92,8 @@ class MygiftsTest(unittest.TestCase):
         else:
             uid = "784"
             giftnum = "171107000120"
-        key_list = [uid,giftnum]
-        key = self.common_method.get_key(key_list)
+        list_key = [uid,giftnum]
+        key = Key.get_key(self,list_key)
         params = {
             "userid" : uid,
             "giftnum" : giftnum,

@@ -1,2 +1,4 @@
 .idea
 report
+version_Test
+common/getKey.py

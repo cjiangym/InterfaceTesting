@@ -5,6 +5,8 @@ import xlrd
 import hashlib
 import math
 from common.common_method import Common_method
+from common.getKey import Key
+
 
 class ReceiptGamesTests(unittest.TestCase):
     common_method = Common_method()
@@ -22,8 +24,8 @@ class ReceiptGamesTests(unittest.TestCase):
             uid = str(math.floor(uid))
         devcode = self.common_method.devcode
         pages = "1"
-        key_list = [uid,devcode,pages]
-        key = self.common_method.get_key(key_list)
+        list_key = [uid,devcode,pages]
+        key = Key.get_key(self,list_key)
         params_receiptList ={
             "appversion" : self.common_method.version,
             "timestamp" : self.common_method.timestamp,
@@ -91,8 +93,8 @@ class ReceiptGamesTests(unittest.TestCase):
                     break
         else:
             self.assertEqual(result_receiptList["msg"],"拍立赚列表查询失败")
-        key_list = [uid,devcode,gameid,taskid]
-        key = self.common_method.get_key(key_list)
+        list_key = [uid,devcode,gameid,taskid]
+        key = Key.get_key(self,list_key)
         taskjson = [{
             "datasize":49531,
             "materialid":0,
@@ -144,8 +146,8 @@ class ReceiptGamesTests(unittest.TestCase):
                     break
         else:
             self.assertEqual(result_receiptList["msg"],"拍立赚列表查询失败")
-        key_list = [uid, devcode, gameid]
-        key = self.common_method.get_key (key_list)
+        list_key = [uid, devcode, gameid]
+        key = Key.get_key(self,list_key)
         params = {
             "userid": uid,
             "cityid": math.floor (self.sheet3.cell_value (4, 5)),

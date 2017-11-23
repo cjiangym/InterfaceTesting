@@ -8,6 +8,7 @@ import  datetime
 from xlrd import xldate_as_tuple
 
 from common.common_method import Common_method
+from common.getKey import Key
 from common.login import Login
 
 class ShoppingCardsTest(unittest.TestCase):
@@ -36,8 +37,8 @@ class ShoppingCardsTest(unittest.TestCase):
             date = xldate_as_tuple (self.sheet2.cell_value (4, 7), 0)
             opdate = str (datetime.datetime(*date))
             type = (self.sheet2.cell_value (4, 9))
-            key_list = [userid, userkey, opdate, page, authkey]
-            key = self.common_method.get_key (key_list)
+            list_key = [userid, userkey, opdate, page, authkey]
+            key = Key.get_key(self,list_key)
             dict = self.common_method.get_common_params ()
             devcode = dict["devcode"]
             # 获取接口地址
@@ -93,8 +94,8 @@ class ShoppingCardsTest(unittest.TestCase):
                     uid = str(math.floor(self.sheet2.cell_value (3,5)))        # 用户id
                     uuid = self.sheet2.cell_value(3,4)             #购物卡uuid
                     authkey = self.sheet2.cell_value(3,6)
-                key_list = [uid,uuid,opdate,authkey]
-                key = self.common_method.get_key(key_list)
+                list_key = [uid,uuid,opdate,authkey]
+                key = Key.get_key(self,list_key)
                 params = {
                     "uid":uid,
                     "cityid":cityid,
@@ -127,8 +128,8 @@ class ShoppingCardsTest(unittest.TestCase):
             authkey = self.result_login["data"]["authkey"]
             date = xldate_as_tuple(self.sheet2.cell_value(5, 7), 0)
             opdate = str(datetime.datetime (*date))
-            key_list = [userid, userkey, opdate, page,authkey]
-            key = self.common_method.get_key (key_list)
+            list_key = [userid, userkey, opdate, page,authkey]
+            key = Key.get_key(self,list_key)
             retailid = self.sheet2.cell_value(5,8)
             if isinstance(retailid,float):
                 retailid = str(math.floor(retailid))

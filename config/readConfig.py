@@ -14,7 +14,8 @@ class Readconfig():
         port = 0
         sender = "cjiangym@163.com"
         psw = "jym617609"
-        receiver = "cassiejiang@ismartgo.com"
+        #receiver = "cassiejiang@ismartgo.com"
+        receiver = "testdept@ismartgo.com"
         # ----------2.编辑邮件的内容-----------#
 
         # 读文件
@@ -42,7 +43,7 @@ class Readconfig():
             smtp.login(sender, psw)
         except:
             smtp = smtplib.SMTP_SSL(smtpserver, port)
-            smtp.login(sender, psw)     # 登录
+            smtp.login(sender, psw)      # 登录
         smtp.sendmail(sender, receiver, msg.as_string()) # 发送
         smtp.quit()
 

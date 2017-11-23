@@ -8,6 +8,7 @@ import  datetime
 from xlrd import xldate_as_tuple
 from common.common_method import Common_method
 from common.login import Login
+from common.getKey import Key
 
 
 class DailySign_shopSign_goodsScanTest(unittest.TestCase):
@@ -73,7 +74,7 @@ class DailySign_shopSign_goodsScanTest(unittest.TestCase):
                 timestamp = self.common_method.timestamp
                 authkey = result_login["data"]["authkey"]                #从登录获取
                 key_list = [uid, shopId, beacon, timestamp, authkey]
-                key = self.common_method.get_key (key_list)
+                key = Key.get_key (self,key_list)
                 params = {
                     "beacon":beacon ,
                     "lon": result_shopSignlist["data"]["shopSignList"][shop_list]["lon"],    # 从签到列表获取经纬度
@@ -131,7 +132,7 @@ class DailySign_shopSign_goodsScanTest(unittest.TestCase):
         pages = self.sheet1.cell_value (17, 9)
         authkey = result_login["data"]["authkey"]
         key_list = [uid,cityid,lon,lat,timestamp,authkey]
-        key = self.common_method.get_key(key_list)
+        key = Key.get_key(self,key_list)
         params = {
             "timestamp":timestamp,
             "pageSize":"30",
@@ -157,7 +158,7 @@ class DailySign_shopSign_goodsScanTest(unittest.TestCase):
         barcode = self.sheet1.cell_value (18, 7)
         timestamp = self.dict["timestamp"]
         key_list = [shopid, uid, barcode, timestamp, authkey]
-        key = self.common_method.get_key (key_list)
+        key = Key.get_key (self,key_list)
         params = {
             "uid": uid,
             "shopid": shopid,
@@ -212,7 +213,7 @@ class DailySign_shopSign_goodsScanTest(unittest.TestCase):
         appversion = self.dict["version"]
         os = self.dict["os"]
         key_list = [shopid, uid, barcode, timestamp, authkey]
-        key = self.common_method.get_key (key_list)
+        key = Key.get_key (self,key_list)
         params = {
             "uid": uid,
             "shopid": shopid,
