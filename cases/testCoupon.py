@@ -51,20 +51,24 @@ class CouponTest(unittest.TestCase):
         else:
             login_data = self.login.wx_login(phone)
         # 从登录接口获取用户id,authkey,用户计算加密
-        uid = str (login_data["data"]["user"]["id"])
+        uid = str(login_data["data"]["user"]["id"])
         authkey = login_data["data"]["authkey"]
         response = self.get_myconponList(uid,authkey)
         self.assertEqual(response.status_code,200)
         result = json.loads (response.content)
         self.assertEqual (result["status"], 10001)
-        self.assertNotEqual (len (result["data"]), 0)
+        self.assertNotEqual(len (result["data"]),0)
 
     def test_mygiftcoupons(self):
         u"测试我的兑换代金券列表"
         base_url = self.sheet4.cell_value(4,2)
         phone = self.sheet4.cell_value(4,4)
         psw = self.sheet4.cell_value(4,5)
-        login_data = self.login.phone_login(phone,psw)
+        if re.match (r"\d", phone):  # 是手机号则使用手机好登录，否则使用微信登录
+            psw = self.sheet4.cell_value (2, 5)
+            login_data = self.login.phone_login (phone, psw)
+        else:
+            login_data = self.login.wx_login(phone)
         uid = str(login_data["data"]["user"]["id"])
         authkey = login_data["data"]["authkey"]
         timestamp = self.common_method.timestamp
@@ -82,8 +86,8 @@ class CouponTest(unittest.TestCase):
         response = requests.post(base_url,params=params,verify=False)
         self.assertEqual(response.status_code,200)
         result = json.loads(response.content)
-        print(response)
-        print(result)
+        self.assertEqual(result["status"],10001)
+        self.assertNotEqual(len(result["data"]["items"]),0)
 
     def test_couponDetail(self):
         u"测试优惠券详情"
@@ -102,7 +106,7 @@ class CouponTest(unittest.TestCase):
         if result_couponlist["data"]["items"]:
             couponnum = result_couponlist["data"]["items"][0]["couponnum"]
             timestamp = self.common_method.timestamp
-            key_list = [uid,timestamp,authkey]
+            key_list = [uid,couponnum,timestamp,authkey]
             key = Key.get_key(self,key_list)
             uuid = result_couponlist["data"]["items"][0]["uuid"]
             params = {
@@ -110,10 +114,14 @@ class CouponTest(unittest.TestCase):
                 "key" :key,
                 "uid" :uid,
                 "timestamp" :timestamp,
-                "uuid" : uuid
+                "uuid" : uuid,
+                "appversion":self.common_method.version
             }
             response = requests.post(base_url,params = params,verify = False)
             self.assertEqual(response.status_code,200)
             result = json.loads(response.content)
+            self.assertEqual(result["status"],10001)
+            self.assertNotEqual(result["data"],{})
+            self.assertNotEqual(result["data"],"null")
         else:
             self.assertEqual(uid,"该用户没有优惠券,无法查看优惠券详情")
