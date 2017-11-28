@@ -9,13 +9,12 @@ from common.getKey import Key
 
 
 class Login():
-
     common_method = Common_method()
     sheet1 = common_method.get_excle_sheet1()
 
    #手机号码登录
     def phone_login(self,phone,psw):
-        base_url = self.sheet1.cell_value (5, 2)  # 接口地址
+        base_url = self.sheet1.cell_value(5, 2)   # 接口地址
         self.phone = phone                        # 手机号码
         if isinstance (self.phone, float):  # 判断单元格值的类型
             self.phone = str(math.floor(self.phone))  # 转换成str类型
