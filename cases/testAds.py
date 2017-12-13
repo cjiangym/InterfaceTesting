@@ -8,10 +8,12 @@ import  datetime
 import re
 from xlrd import xldate_as_tuple
 from common.common_method import Common_method
+from config import  serverAddressConfig
 
 class AdsTest(unittest.TestCase):
     common_method = Common_method()
-    sheet1 = common_method.get_excle_sheet1()
+    sheet1 = common_method.get_excle_sheet(0)
+    svrAddr = serverAddressConfig.sv_29090
 
     def setUp(self):
         pass
@@ -24,11 +26,11 @@ class AdsTest(unittest.TestCase):
             "uid":userid,
             "cityName" :cityName,
             "moduleid" :module_id,
-            "appversion" : self.common_method.version,
-            "os": self.common_method.os,
-            "devcode ": self.common_method.devcode
+            "appversion" : serverAddressConfig.version,
+            "os": serverAddressConfig,
+            "devcode ": serverAddressConfig
         }
-        response = requests.get(base_url,params=params)
+        response = Common_method.get_response(self,self.svrAddr,base_url,params=params)
         return response
 
     def test_homepageAds(self):

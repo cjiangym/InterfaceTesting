@@ -10,12 +10,14 @@ from xlrd import xldate_as_tuple
 from common.common_method import Common_method
 from common.login import Login
 from common.getKey import Key
+from config import  serverAddressConfig
 
 class CouponTest(unittest.TestCase):
     common_method = Common_method()
-    sheet4 = common_method.get_excle_sheet4()
-    sheet5 = common_method.get_excle_sheet5()
+    sheet4 = common_method.get_excle_sheet(3)
+    sheet5 = common_method.get_excle_sheet(4)
     login = Login()
+    svrAddr = serverAddressConfig.coupon_29083
     def setUp(self):
         pass
     def tearDown(self):
@@ -25,7 +27,7 @@ class CouponTest(unittest.TestCase):
         base_url = self.sheet4.cell_value(2,2)
         uid = uid
         authkey = authkey
-        timestamp = self.common_method.timestamp
+        timestamp = serverAddressConfig.timestamp
         key_list = [uid,timestamp,authkey]
         key = Key.get_key(self,key_list)
         postdata ={
@@ -34,11 +36,11 @@ class CouponTest(unittest.TestCase):
             "key" :key,
             "status": self.sheet4.cell_value(2,6),
             "page": "1",
-            "appversion": self.common_method.version,
-            "os" :self.common_method.os,
-            "devcode" :self.common_method.devcode
+            "appversion": serverAddressConfig.version,
+            "os" :serverAddressConfig.os,
+            "devcode" :serverAddressConfig.devcode
         }
-        response_list = requests.post(base_url,data=postdata,verify=False)
+        response_list = self.common_method.post_response(self.svrAddr,base_url,params=postdata)
         return  response_list
 
 
@@ -52,6 +54,8 @@ class CouponTest(unittest.TestCase):
             login_data = self.login.wx_login(phone)
         # 从登录接口获取用户id,authkey,用户计算加密
         uid = str(login_data["data"]["user"]["id"])
+        #uid = "300176"
+        #authkey = "gea2s1AGywNgN4Jm"
         authkey = login_data["data"]["authkey"]
         response = self.get_myconponList(uid,authkey)
         self.assertEqual(response.status_code,200)
@@ -81,13 +85,14 @@ class CouponTest(unittest.TestCase):
             "type" :self.sheet4.cell_value(4,8),
             "page" :self.sheet4.cell_value(4,9),
             "timestamp": timestamp,
-            "key" :key
+            "key" :key,
+            "appversion":self.common_method.version
         }
         response = requests.post(base_url,params=params,verify=False)
         self.assertEqual(response.status_code,200)
         result = json.loads(response.content)
         self.assertEqual(result["status"],10001)
-        self.assertNotEqual(len(result["data"]["items"]),0)
+        self.assertNotEqual(result["data"],{})
 
     def test_couponDetail(self):
         u"测试优惠券详情"

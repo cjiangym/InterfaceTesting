@@ -12,7 +12,7 @@ from common.getKey import Key
 
 class MygiftsTest(unittest.TestCase):
     common_method = Common_method()
-    sheet1 = common_method.get_excle_sheet1()
+    sheet1 = common_method.get_excle_sheet(0)
 
     def setUp(self):
         pass

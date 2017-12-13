@@ -12,7 +12,7 @@ from common.getKey import Key
 #手机号登录、微信登录测试
 class LoginTest(unittest.TestCase):
     common_method = Common_method()
-    sheet1 = common_method.get_excle_sheet1()
+    sheet1 = common_method.get_excle_sheet(0)
     login = Login()
     phone = sheet1.cell_value (5, 5)
     psw = sheet1.cell_value (5, 6)

@@ -7,13 +7,11 @@ import math
 import  datetime
 from xlrd import xldate_as_tuple
 from common.common_method import Common_method
-from cases.testCoupon import CouponTest
 from common.getKey import Key
 
 class ExchangegiftTest(unittest.TestCase):
     common_method = Common_method()
-    sheet1 = common_method.get_excle_sheet1()
-    coupon = CouponTest()
+    sheet1 = common_method.get_excle_sheet(0)
 
     def setUp(self):
         pass

@@ -13,7 +13,7 @@ from common.getRetails import get_Retails
 
 class PromotionTest(unittest.TestCase):
     common_method = Common_method()
-    sheet2 = common_method.get_excle_sheet2()
+    sheet2 = common_method.get_excle_sheet(1)
 
     def setUp(self):
         pass
@@ -151,26 +151,55 @@ class PromotionTest(unittest.TestCase):
         list_key = [userid,timestamp]
         key = Key.get_key(self,list_key)
         params = {
-            "appversion" : "401000",
+            "appversion" : self.common_method.version,
             "cityid" : self.sheet2.cell_value(11,5),
             "devcode" : self.common_method.devcode,
-            "distance" :"",
-            "districtid" : -2,
+            "subscribe" :0,
             "key" : key,
             "lon" : self.sheet2.cell_value(11,6),
             "lat" : self.sheet2.cell_value(11,7),
             "nextpage" :"" ,
             "os" :self.common_method.os,
-            "shoptypeid" : -1 ,
             "timestamp": timestamp,
-            "townid" : -2 ,
             "userid" : userid
         }
         response = requests.get(base_url,params=params)
         self.assertEqual(response.status_code,200)
         result = json.loads(response.content)
         self.assertEqual(result["status"],10001)
+        self.assertNotEqual (result["data"],"null")
         self.assertNotEqual(result["data"]["retails"],[])
+
+    def test_retailPromotion(self):
+        u"测试获取促销优惠列表"
+        base_url = self.sheet2.cell_value(12,2)
+        userid = self.sheet2.cell_value(12,4)
+        timestamp = self.common_method.timestamp
+        key_list = [userid,timestamp]
+        key = Key.get_key(self,key_list)
+        params = {
+            "districtid":-2,
+            "appversion": self.common_method.version,
+            "cityid": self.sheet2.cell_value (12, 5),
+            "devcode": self.common_method.devcode,
+            "key": key,
+            "lon": self.sheet2.cell_value (12, 6),
+            "lat": self.sheet2.cell_value (12, 7),
+            "nextpage": "",
+            "os": self.common_method.os,
+            "timestamp": timestamp,
+            "userid": userid,
+            "retailid":-1,
+            "townid":-2,
+            "distance":"",
+            "shoptypeid":-1
+        }
+        response = requests.get (base_url, params=params)
+        self.assertEqual (response.status_code, 200)
+        result = json.loads (response.content)
+        self.assertEqual (result["status"], 10001)
+        self.assertNotEqual (result["data"], "null")
+        self.assertNotEqual (result["data"]["retails"],[])
 
 
 

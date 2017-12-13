@@ -13,8 +13,8 @@ from common.login import Login
 
 class ShoppingCardsTest(unittest.TestCase):
     common_method = Common_method ()
-    sheet2 = common_method.get_excle_sheet2()
-    sheet1 = common_method.get_excle_sheet1()
+    sheet2 = common_method.get_excle_sheet(1)
+    sheet1 = common_method.get_excle_sheet(0)
     login = Login()
     dict = common_method.get_common_params()
     phone = sheet1.cell_value(5, 5)

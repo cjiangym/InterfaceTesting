@@ -1,6 +1,8 @@
 import unittest
 import requests
 import json
+
+import time
 import xlrd
 import math
 from common.common_method import Common_method
@@ -9,7 +11,7 @@ from common.common_method import Common_method
 #sessionId
 class SessionIdTest(unittest.TestCase):
     common_method = Common_method()
-    sheet1 = common_method.get_excle_sheet1()
+    sheet1 = common_method.get_excle_sheet(0)
     def setUp(self):
         pass
     def tearDown(self):
@@ -25,7 +27,7 @@ class SessionIdTest(unittest.TestCase):
         client = Common_method.__dict__["os"]
         devcode = Common_method.__dict__["devcode"]
         os = Common_method.__dict__["os"]
-        reqtime = "2017-10-17 16:11:20"
+        reqtime = time.strftime ("%Y-%m-%d %H:%M:%S", time.localtime ())
         userkey = "123"               #没有时默认为123
         params = {
          "appversion":appversion,

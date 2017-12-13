@@ -6,11 +6,13 @@ import requests
 import json
 from common.common_method import Common_method
 from common.getKey import Key
+from config import serverAddressConfig
 
 
 class Login():
     common_method = Common_method()
-    sheet1 = common_method.get_excle_sheet1()
+    sheet1 = common_method.get_excle_sheet(0)
+    svrAddr = serverAddressConfig.sv_29090
 
    #手机号码登录
     def phone_login(self,phone,psw):
@@ -21,9 +23,9 @@ class Login():
         self.psw = psw                       # 密码
         password_md5 = hashlib.md5 (self.psw.encode ("utf-8")).hexdigest ()       # 密码通过md5加密
         userId = str (math.floor (self.sheet1.cell_value (5, 4)))  # 游客id
-        appversion = self.common_method.version  # 版本号
-        devcode = self.common_method.devcode  # 设备号
-        os = self.common_method.os  # 操作系统
+        appversion = serverAddressConfig.version  # 版本号
+        devcode = serverAddressConfig.devcode  # 设备号
+        os = serverAddressConfig.os  # 操作系统
         type = "2"  # 类型
         params = {
             "appversion": appversion,
@@ -34,7 +36,7 @@ class Login():
             "type": type,
             "uid": userId
         }
-        response = requests.get(base_url, params=params)
+        response = self.common_method.get_response(self.svrAddr,base_url, params=params)
         result = json.loads(response.content)
         response_dict ={
             "data" :result["data"],

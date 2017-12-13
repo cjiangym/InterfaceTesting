@@ -14,8 +14,8 @@ from common.getKey import Key
 class DailySign_shopSign_goodsScanTest(unittest.TestCase):
 
     common_method = Common_method()
-    sheet1 = common_method.get_excle_sheet1 ()
-    sheet2 = common_method.get_excle_sheet2()
+    sheet1 = common_method.get_excle_sheet(1)
+    sheet2 = common_method.get_excle_sheet(2)
     dict = common_method.get_common_params()
     login = Login()
 

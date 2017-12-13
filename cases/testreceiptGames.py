@@ -10,7 +10,7 @@ from common.getKey import Key
 
 class ReceiptGamesTests(unittest.TestCase):
     common_method = Common_method()
-    sheet3 = common_method.get_excle_sheet3()
+    sheet3 = common_method.get_excle_sheet(2)
     def setUp(self):
         pass
     def tearDown(self):
@@ -170,6 +170,31 @@ class ReceiptGamesTests(unittest.TestCase):
             self.assertEqual (result["data"], None)
         else:
             self.assertEqual (result["msg"], "领取失败")
+
+    def test_myTaskList(self):
+        u"测试我的列表"
+        base_url = self.sheet3.cell_value(7,2)
+        userid = self.sheet3.cell_value(7,4)
+        devcode = self.common_method.devcode
+        pages = "1"
+        key_list=[userid,devcode,pages]
+        key = Key.get_key(self,key_list)
+        params = {
+            "status":self.sheet3.cell_value(7,8),
+            "lon":self.sheet3.cell_value(7,6),
+            "lat":self.sheet3.cell_value(7,7),
+            "key":key,
+            "cityid":self.sheet3.cell_value(7,5),
+            "userid":userid,
+            "pages":pages,
+            "appversion":self.common_method.version,
+            "devcode":self.common_method.devcode
+        }
+        response = requests.get(base_url,params=params)
+        self.assertEqual(response.status_code,200)
+        result = json.loads(response.content)
+        self.assertNotEqual(result["data"],"null")
+        self.assertNotEqual (result["data"]["tasks"],[])
 
 
 

@@ -14,8 +14,8 @@ from common.getRetails import get_Retails
 #搜索促销信息商品、搜索网购赚商品，搜索零售商（我的关注页面），搜索礼品
 class SearchTest(unittest.TestCase):
     commom_method = Common_method()
-    sheet1 = commom_method.get_excle_sheet1()
-    sheet2 = commom_method.get_excle_sheet2()
+    sheet1 = commom_method.get_excle_sheet(0)
+    sheet2 = commom_method.get_excle_sheet(1)
 
     def setUp(self):
         pass

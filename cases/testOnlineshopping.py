@@ -17,7 +17,7 @@ class OnlineshoppingTest(unittest.TestCase):
 
     def test_homepageRecommend(self):
         u"测试获取首页网购推荐列表"
-        base_url ="http://192.168.1.243:7020/mksv/goods/getbysubject"
+        base_url ="http://wx2.ismartgo.com/mksv/goods/getbysubject"
         params = {
             "lon" : "116.512392" ,
             "appversion" : "401000",

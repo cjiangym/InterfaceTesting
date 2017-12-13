@@ -7,6 +7,7 @@ import hashlib
 import sys
 import os
 import requests
+from config import serverAddressConfig
 #用于命令行执行时对所有路径进行搜索（pydev在运行时会把当前工程的所有文件夹路径都作为包的搜索路径，而命令行默认只是搜索当前路径）
 curPath = os.path.abspath(os.path.dirname(__file__))
 rootPath = os.path.split(curPath)[0]
@@ -15,56 +16,14 @@ sys.path.append(rootPath)
 
 class Common_method():
     testTime = time.strftime("%Y-%m-%d", time.localtime())   #测试报告时间
-    version = "401000"
-    os = "iOS"
-    devcode = "e895ec8c-6c18-4a27-a509-328cd252b6fa"
-    timestamp = "20171018160129"
 
-    #获取固定值
-    def get_common_params(self):
-        dict = {"version":"401000",
-                "os":"iOS",
-                "devcode":"e895ec8c-6c18-4a27-a509-328cd252b6fa",
-                "timestamp":"20171018160129"
-                }
-        return dict
-
-    #测试用例excel第一个表格
-    def get_excle_sheet1(self):
-        path = rootPath + "\\cases.xlsx"
-        xlx_data = xlrd.open_workbook (path)
-        # 取第一个表格
-        sheet1 = xlx_data.sheet_by_index (0)
-        return sheet1
-
-        # 测试用例excel第二个表格
-    def get_excle_sheet2(self):
-        path = rootPath +"\\cases.xlsx"
-        xlx_data = xlrd.open_workbook(path)
-        sheet2 = xlx_data.sheet_by_index(1)
-        return sheet2
-
-        # 测试用例excel第三个表格
-    def get_excle_sheet3(self):
+    #测试用例excel第x个表格
+    def get_excle_sheet(self,sheet_id):
         path = rootPath + "\\cases.xlsx"
         xlx_data = xlrd.open_workbook(path)
-        sheet3 = xlx_data.sheet_by_index(2)
-        return sheet3
-
-        # 测试用例excel第三个表格
-    def get_excle_sheet4(self):
-        path = rootPath + "\\cases.xlsx"
-        xlx_data = xlrd.open_workbook (path)
-        sheet4 = xlx_data.sheet_by_index (3)
-        return sheet4
-
-    # 测试用例excel第五个表格
-    def get_excle_sheet5(self):
-        path = rootPath + "\\cases.xlsx"
-        xlx_data = xlrd.open_workbook (path)
-        # 取第一个表格
-        sheet5 = xlx_data.sheet_by_index(4)
-        return sheet5
+        # 取第x个表格
+        sheet = xlx_data.sheet_by_index(sheet_id)
+        return sheet
 
     #获取测试报告
     def get_reportpath(self):
@@ -79,6 +38,18 @@ class Common_method():
             "page": 1
         }
         response = requests.get (base_url, params=params)
+        return response
+
+    #封装request.get方法
+    def get_response(self,svrAddr,base_url,params):
+        url = svrAddr+base_url
+        response = requests.get(url=url,params=params)
+        return response
+
+    # 封装request.get方法
+    def post_response(self,svrAddr, base_url, params):
+        url = svrAddr + base_url
+        response = requests.post(url=url, params=params,verify=False)
         return response
 
 
