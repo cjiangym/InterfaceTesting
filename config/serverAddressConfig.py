@@ -9,10 +9,14 @@
 192.168.1.243:29079----------https:sv.ismartgo.cn
 192.168.1.243:29083----------https:sv.ismartgo.cn
 '''
+import time
+
+phone_number = "13450244170"
+password = "123456"
 version = "402000"
 os = "iOS"
 devcode = "e895ec8c-6c18-4a27-a509-328cd252b6fa"
-timestamp = "20171018160129"
+timestamp = time.strftime("%Y%m%d%H%M%S",time.localtime())
 
 
 sv_29090 = "http://sv.ismartgo.cn:29090"

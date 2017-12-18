@@ -8,10 +8,12 @@ import  datetime
 from xlrd import xldate_as_tuple
 from common.common_method import Common_method
 from common.getKey import Key
+from config import serverAddressConfig
 
 class ExchangegiftTest(unittest.TestCase):
     common_method = Common_method()
     sheet1 = common_method.get_excle_sheet(0)
+    svrAddr = serverAddressConfig.sv_29090
 
     def setUp(self):
         pass
@@ -21,20 +23,18 @@ class ExchangegiftTest(unittest.TestCase):
     def gift_exchange(self):
         pass
 
-    def exchangeGift(self,userid,giftid,gift_type):
+    def exchangeGift(self,userid,giftid,gifttype):
         u"测试兑换礼品"
         base_url = self.sheet1.cell_value(27,2)
-        uid = userid
-        giftId = giftid
-        giftType = gift_type
-        if gift_type == "1":
+        url = self.svrAddr + base_url
+        if gifttype == "1":
             contactNumber = self.sheet1.cell_value(27,7)
             buyNumber =  self.sheet1.cell_value (27,8)
-            key_list = [giftId,giftType,contactNumber,uid,buyNumber]
+            key_list = [giftid,gifttype,contactNumber,userid,buyNumber]
             key = Key.get_key (self,key_list)
             params = {
-                "uid": uid,
-                "giftId": giftId,
+                "uid": userid,
+                "giftId": giftid,
                 "contactPerson": self.sheet1.cell_value (27, 6),
                 "contactNumber": contactNumber,
                 "buyNumber": buyNumber,
@@ -48,7 +48,7 @@ class ExchangegiftTest(unittest.TestCase):
                 "town_id": self.sheet1.cell_value (27, 16),
                 "deliveryAddress": self.sheet1.cell_value (27, 17),
                 "address" : self.sheet1.cell_value(27,18),
-                "giftType" : giftType,
+                "giftType" : gifttype,
                 "pay_money":0,
                 "couponids":"",
                 "key" : key
@@ -56,80 +56,77 @@ class ExchangegiftTest(unittest.TestCase):
         else:
             contactNumber = self.sheet1.cell_value (28, 6)
             buyNumber = self.sheet1.cell_value (28,7)
-            key_list = [giftId, giftType, contactNumber, uid, buyNumber]
+            key_list = [giftid, gifttype, contactNumber, userid, buyNumber]
             key = Key.get_key (self,key_list)
             params = {
                 "buyNumber": buyNumber,
                 "contactNumber": contactNumber,
-                "giftId": giftId,
-                "giftType": giftType,
-                "uid": uid,
+                "giftId": giftid,
+                "giftType": gifttype,
+                "uid": userid,
                 "pay_money": 0,
                 "couponids": "",
                 "key" :key
             }
-        response = requests.get(base_url,params=params)
-        return response
+        response = requests.get(url,params=params)
+        result = json.loads(response.content)
+        return result
 
-    """
+    '''
     def test_exchangeGift_01(self):
         u"测试正常礼品兑换 - 实物礼品"
         uid = self.sheet1.cell_value(27,4)
         giftid = self.sheet1.cell_value(27,5)
         gift_type = "1"        #实物礼品
-        response = self.exchangeGift(uid,giftid,gift_type)
-        if response.status_code ==200:
-            result = json.loads(response.content)
-            if result["data"]:
-                self.assertEqual(result["status"],10001)
-                gift_numbet = result["data"]["giftnumber"]
-                self.assertNotEqual(result["data"]["giftnumber"],None)
-            else:
-                self.assertEqual(result["msg"],0)
-        else:
-            self.assertEqual(response.status_code,200)
-
+        try:
+            self.result = self.exchangeGift(uid,giftid,gift_type)
+        except:
+            self.assertTrue(None,"兑换失败")
+        self.assertEqual(self.result["status"],10001)
+        self.assertNotEqual(self.result["data"],{})
+        self.assertNotEqual(self.result["data"],"null")
+        self.assertNotEqual(self.result["data"]["giftnumber"],None)
+    '''
+    '''
     def test_exchangeGift_02(self):
         u"测试正常礼品兑换 - 虚拟礼品"
-        uid = self.sheet1.cell_value (28, 4)
-        giftid = self.sheet1.cell_value (28, 5)
+        uid = self.sheet1.cell_value(28, 4)
+        giftid = self.sheet1.cell_value(28, 5)
         gift_type = "2"                               # 虚拟礼品
-        response = self.exchangeGift (uid, giftid, gift_type)
-        if response.status_code == 200:
-            result = json.loads (response.content)
-            if result["data"]:
-                self.assertEqual (result["status"], 10001)
-                gift_numbet = result["data"]["giftnumber"]
-                self.assertNotEqual (result["data"]["giftnumber"], None)
-            else:
-                self.assertEqual (result["msg"], 0)
-        else:
-            self.assertEqual (response.status_code, 200)    
-    """
+        try:
+            self.result = self.exchangeGift(uid,giftid,gift_type)
+        except:
+            self.assertTrue(None,"兑换失败")
+        self.assertEqual(self.result["status"],10001)
+        self.assertNotEqual(self.result["data"],{})
+        self.assertNotEqual(self.result["data"],"null")
+        self.assertNotEqual(self.result["data"]["giftnumber"],None)
+    '''
 
     def test_exchange_03(self):
         u"测试异常礼品兑换 - 库存不足"
         uid = self.sheet1.cell_value (29, 5)
         giftid = self.sheet1.cell_value (29, 4)
         gift_type = "2"                               # 虚拟礼品
-        response = self.exchangeGift (uid, giftid, gift_type)
-        if response.status_code == 200:
-            result = json.loads (response.content)
-            print(result)
-            self.assertEqual(result["data"],{})
-            self.assertEqual (result["status"], 20004)
-            self.assertEqual (result["msg"], "礼品已经兑换完啦")
+        try:
+            self.result = self.exchangeGift(uid, giftid, gift_type)
+        except:
+            self.assertTrue(None,"兑换失败")
+        self.assertEqual(self.result["data"],{})
+        self.assertEqual(self.result["status"], 20004)
+        self.assertEqual(self.result["msg"], "礼品已经兑换完啦")
 
     def test_exchange_04(self):
         u"测试异常礼品兑换 - 支付金额不够"
         base_url = self.sheet1.cell_value (30, 2)
-        uid = self.sheet1.cell_value (30, 5)
-        giftid = self.sheet1.cell_value (30, 4)
+        url = self.svrAddr + base_url
+        uid = self.sheet1.cell_value(30, 5)
+        giftid = self.sheet1.cell_value(30, 4)
         gift_type ="2"
         contactNumber = "13450244170"
         buyNumber = "1"
         key_list = [giftid, gift_type, contactNumber, uid, buyNumber]
-        key = Key.get_key (self,key_list)
+        key = Key.get_key(self,key_list)
         params = {
             "uid": uid,
             "giftId": giftid,
@@ -151,7 +148,8 @@ class ExchangegiftTest(unittest.TestCase):
             "couponids":"03dCrSJ6G+4=",
             "key": key
         }
-        response = requests.get(base_url,params=params)
+        response = requests.get(url,params=params)
+        self.assertEqual(response.status_code,200)
         result = json.loads(response.content)
         self.assertEqual(result["status"],20001)
         self.assertEqual(result["msg"],"金额不匹配")
@@ -159,6 +157,7 @@ class ExchangegiftTest(unittest.TestCase):
     def test_exchange_05(self):
         u"测试异常礼品兑换 - 优惠券id有误"
         base_url = self.sheet1.cell_value (30, 2)
+        url = self.svrAddr + base_url
         uid = self.sheet1.cell_value (30, 5)
         giftid = self.sheet1.cell_value (30, 4)
         gift_type = "1"
@@ -187,8 +186,8 @@ class ExchangegiftTest(unittest.TestCase):
             "couponids": "abcjoeur",
             "key": key
         }
-        response = requests.get (base_url, params=params)
-        result = json.loads (response.content)
+        response = requests.get(url, params=params)
+        result = json.loads(response.content)
         self.assertEqual(result["msg"],"下单失败，请稍后重试")
     '''
     def test_coupon_exchange(self):
@@ -200,77 +199,77 @@ class ExchangegiftTest(unittest.TestCase):
         uid = self.sheet1.cell_value (31, 5)
         giftid = self.sheet1.cell_value (31, 4)
         gift_type = "1"  # 虚拟礼品
-        response = self.exchangeGift (uid, giftid, gift_type)
-        if response.status_code == 200:
-            result = json.loads (response.content)
-            print (result)
-            self.assertEqual (result["data"], {})
-            self.assertEqual (result["status"], 20003)
-            self.assertEqual (result["msg"], "哎呀~精明豆不够，兑换失败")
+        try:
+            self.result = self.exchangeGift (uid, giftid, gift_type)
+        except:
+            self.assertTrue(None,"兑换失败")
+        self.assertEqual(self.result["data"], {})
+        self.assertEqual(self.result["status"], 20003)
+        self.assertEqual(self.result["msg"], "哎呀~精明豆不够，兑换失败")
 
     def test_exchange_07(self):
         u"测试异常礼品兑换 - 礼品未上线"
         uid = self.sheet1.cell_value (32, 5)
         giftid = self.sheet1.cell_value (32, 4)
         gift_type = "1"  # 虚拟礼品
-        response = self.exchangeGift (uid, giftid, gift_type)
-        if response.status_code == 200:
-            result = json.loads (response.content)
-            print (result)
-            self.assertEqual (result["data"], {})
-            self.assertEqual (result["status"], 20001)
-            self.assertEqual (result["msg"], "该礼品已下架啦")
+        try:
+            self.result = self.exchangeGift (uid, giftid, gift_type)
+        except:
+            self.assertTrue(None,"兑换失败")
+        self.assertEqual (self.result["data"], {})
+        self.assertEqual (self.result["status"], 20001)
+        self.assertEqual (self.result["msg"], "该礼品已下架啦")
 
     def test_exchange_08(self):
         u"测试异常礼品兑换 - 礼品已过期"
         uid = self.sheet1.cell_value (33, 5)
         giftid = self.sheet1.cell_value (33, 4)
         gift_type = "1"  # 虚拟礼品
-        response = self.exchangeGift (uid, giftid, gift_type)
-        if response.status_code == 200:
-            result = json.loads (response.content)
-            print (result)
-            self.assertEqual (result["data"], {})
-            self.assertEqual (result["status"], 20001)
-            self.assertEqual (result["msg"], "该礼品已下架啦")
+        try:
+            self.result = self.exchangeGift (uid, giftid, gift_type)
+        except:
+            self.assertTrue(None,"兑换失败")
+        self.assertEqual(self.result["data"],{})
+        self.assertEqual(self.result["status"],20003)
+        self.assertEqual(self.result["msg"], "该礼品已下架啦")
 
     def test_exchange_09(self):
         u"测试异常礼品兑换 - 礼品暂停使用"
         uid = self.sheet1.cell_value (34, 5)
         giftid = self.sheet1.cell_value (34, 4)
         gift_type = "1"  # 虚拟礼品
-        response = self.exchangeGift (uid, giftid, gift_type)
-        if response.status_code == 200:
-            result = json.loads (response.content)
-            print (result)
-            self.assertEqual (result["data"], {})
-            self.assertEqual (result["status"], 20001)
-            self.assertEqual (result["msg"], "该礼品已下架啦")
+        try:
+            self.result = self.exchangeGift (uid, giftid, gift_type)
+        except:
+            self.assertTrue(None,"兑换失败")
+        self.assertEqual (self.result["status"],20001)
+        self.assertEqual (self.result["data"],{})
+        self.assertEqual (self.result["msg"],"该礼品已下架啦")
 
     def test_exchange_10(self):
         u"测试异常礼品兑换 - 等级不够"
         uid = self.sheet1.cell_value (35,5)
         giftid = self.sheet1.cell_value (35, 4)
         gift_type = "1"           # 实物礼品，2虚拟礼品
-        response = self.exchangeGift(uid, giftid, gift_type)
-        if response.status_code == 200:
-            result = json.loads (response.content)
-            print (result)
-            self.assertEqual (result["data"], {})
-            self.assertEqual (result["status"], 20004)
-            self.assertEqual (result["msg"], "该商品需要V2及以上才能兑换哦，赶紧去升级吧")
+        try:
+            self.result = self.exchangeGift(uid, giftid, gift_type)
+        except:
+            self.assertTrue(None,"兑换失败")
+        self.assertEqual (self.result["data"], {})
+        self.assertEqual (self.result["status"], 20004)
+        self.assertEqual (self.result["msg"], "该商品需要V2及以上才能兑换哦，赶紧去升级吧")
 
     def test_exchange_11(self):
         u"测试异常礼品兑换 - 不在规定时间内注册"
         uid = self.sheet1.cell_value (36,5)
         giftid = self.sheet1.cell_value (36, 4)
         gift_type = "1"           # 实物礼品，2虚拟礼品
-        response = self.exchangeGift(uid, giftid, gift_type)
-        if response.status_code == 200:
-            result = json.loads (response.content)
-            print (result)
-            self.assertEqual(result["data"], {})
-            self.assertEqual(result["status"], 20004)
-            self.assertEqual(result["msg"], "您不符合兑换条件哦")
+        try:
+            result = self.exchangeGift(uid, giftid, gift_type)
+        except:
+            self.assertTrue(None,"兑换失败")
+        self.assertEqual(result["data"], {})
+        self.assertEqual(result["status"], 20004)
+        self.assertEqual(result["msg"], "您不符合兑换条件哦")
 
 

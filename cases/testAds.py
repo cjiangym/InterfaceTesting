@@ -22,15 +22,9 @@ class AdsTest(unittest.TestCase):
 
     def get_ads(self,module_id,userid,cityName):
         base_url = self.sheet1.cell_value(41,2)
-        params = {
-            "uid":userid,
-            "cityName" :cityName,
-            "moduleid" :module_id,
-            "appversion" : serverAddressConfig.version,
-            "os": serverAddressConfig,
-            "devcode ": serverAddressConfig
-        }
-        response = Common_method.get_response(self,self.svrAddr,base_url,params=params)
+        params_name = ["uid","cityName","moduleid","appversion","os","devcode"]
+        params_value = [userid,cityName,module_id,serverAddressConfig.version,serverAddressConfig.os,serverAddressConfig.devcode]
+        response = self.common_method.get_response(self.svrAddr,base_url,params_name,params_value)
         return response
 
     def test_homepageAds(self):
@@ -38,9 +32,12 @@ class AdsTest(unittest.TestCase):
         uid = self.sheet1.cell_value(41,4)
         cityName = self.sheet1.cell_value(41,5)
         moduleid = "8"
-        response = self.get_ads(moduleid,uid,cityName)
-        self.assertEqual(response.status_code,200)
-        result = json.loads(response.content)
+        try:
+            self.response = self.get_ads(moduleid,uid,cityName)
+        except:
+            self.assertTrue(None,"首页获取广告列表失败")
+        self.assertEqual(self.response.status_code,200)
+        result = json.loads(self.response.content)
         self.assertEqual(result["status"],10001)
         if result["data"]["photoList"] ==[]:
             self.assertEqual(result["data"]["photoList"],"首页没有广告,请检查后台是否有设置广告")

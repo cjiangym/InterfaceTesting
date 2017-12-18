@@ -41,14 +41,18 @@ class Common_method():
         return response
 
     #封装request.get方法
-    def get_response(self,svrAddr,base_url,params):
+    def get_response(self,svrAddr,base_url,params_name,params_value):
         url = svrAddr+base_url
+        '''将两个list转换成dict形式'''
+        params = dict(zip(params_name, params_value))
         response = requests.get(url=url,params=params)
         return response
 
     # 封装request.get方法
-    def post_response(self,svrAddr, base_url, params):
+    def post_response(self,svrAddr, base_url, params_name,params_value):
         url = svrAddr + base_url
+        '''将两个list转换成dict形式'''
+        params = dict(zip(params_name, params_value))
         response = requests.post(url=url, params=params,verify=False)
         return response
 
