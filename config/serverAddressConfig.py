@@ -20,5 +20,6 @@ timestamp = time.strftime("%Y%m%d%H%M%S",time.localtime())
 
 
 sv_29090 = "http://sv.ismartgo.cn:29090"
-sv_29094 = "http://svr.ismartgo.cn:29094"
+svr2_29094 = "http://svr2.ismartgo.cn:29094"
 coupon_29083 = "https://sv.ismartgo.cn"
+gamesv_29096 = "http://appgamesv.ismartgo.cn"

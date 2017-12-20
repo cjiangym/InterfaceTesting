@@ -61,7 +61,7 @@ class LoginTest(unittest.TestCase):
 
     def test_wxlogin_02(self):
         u"微信登录，不需要绑定手机号码"
-        thirdid = self.sheet1.cell_value (8, 5)
+        thirdid = self.sheet1.cell_value(8, 5)
         try:
             self.result = self.login.wx_login (thirdid)
         except:

@@ -10,10 +10,12 @@ from xlrd import xldate_as_tuple
 from common.common_method import Common_method
 from common.getKey import Key
 from common.getRetails import get_Retails
+from config import serverAddressConfig
 
 class PromotionTest(unittest.TestCase):
     common_method = Common_method()
     sheet2 = common_method.get_excle_sheet(1)
+    svrAddr = serverAddressConfig.svr2_29094
 
     def setUp(self):
         pass
@@ -24,8 +26,9 @@ class PromotionTest(unittest.TestCase):
     def test_homepagePromotion(self):
         u"测试首页促销信息"
         base_url = self.sheet2.cell_value(7,2)
+        url = self.svrAddr + base_url
         uid = self.sheet2.cell_value(7,4)
-        timestamp = self.common_method.timestamp
+        timestamp = serverAddressConfig.timestamp
         list_key = [uid,timestamp]
         key = Key.get_key(self,list_key)
         params = {
@@ -38,17 +41,19 @@ class PromotionTest(unittest.TestCase):
             "timestamp" :timestamp,
             "subscribe" :"0"
         }
-        response = requests.get(base_url,params=params)
+        response = requests.get(url,params=params)
         self.assertEqual (response.status_code, 200)
         result = json.loads(response.content)
+        self.assertEqual(result["status"],10001)
         self.assertNotEqual(result["data"]["retails"],[])
 
     def test_mySubscribed(self):
         u"测试首页我关注的零售商"
         base_url = self.sheet2.cell_value (8, 2)
+        url = self.svrAddr + base_url
         uid = self.sheet2.cell_value (8, 4)
         cityid = self.sheet2.cell_value (8, 5)
-        timestamp = self.common_method.timestamp
+        timestamp = serverAddressConfig.timestamp
         list_key = [uid,cityid, timestamp]
         key = Key.get_key(self,list_key)
         params = {
@@ -61,10 +66,12 @@ class PromotionTest(unittest.TestCase):
             "timestamp": timestamp,
             "subscribe": "0"
         }
-        response = requests.get (base_url, params=params)
+        response = requests.get (url, params=params)
         self.assertEqual (response.status_code, 200)
         result = json.loads (response.content)
-        self.assertNotEqual (result["data"]["items"],[])
+        self.assertEqual(result["status"],10001)
+        self.assertNotEqual (result["data"], "null")
+        self.assertNotEqual (result["data"],{})
 
     def test_subscribe(self):
         u"测试关注零售商"

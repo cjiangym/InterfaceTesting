@@ -6,11 +6,12 @@ import hashlib
 import math
 from common.common_method import Common_method
 from common.getKey import Key
-
+from config import  serverAddressConfig
 
 class ReceiptGamesTests(unittest.TestCase):
     common_method = Common_method()
     sheet3 = common_method.get_excle_sheet(2)
+    svrAddr = serverAddressConfig.gamesv_29096
     def setUp(self):
         pass
     def tearDown(self):
@@ -19,71 +20,77 @@ class ReceiptGamesTests(unittest.TestCase):
     #获取小票列表
     def get_receiptList(self):
         base_url = self.sheet3.cell_value(2,2)
+        url = self.svrAddr + base_url
         uid = self.sheet3.cell_value (2, 4)
-        if isinstance(uid,float):
-            uid = str(math.floor(uid))
-        devcode = self.common_method.devcode
+        devcode = serverAddressConfig.devcode
         pages = "1"
         list_key = [uid,devcode,pages]
         key = Key.get_key(self,list_key)
         params_receiptList ={
-            "appversion" : self.common_method.version,
-            "timestamp" : self.common_method.timestamp,
-            "os" :self.common_method.os,
+            "appversion" : serverAddressConfig.version,
+            "timestamp" : serverAddressConfig.timestamp,
+            "os" :serverAddressConfig.os,
             "devcode" : devcode,
             "pages" : pages ,    # 页码
-            "cityid" : math.floor(self.sheet3.cell_value (2, 6)),
+            "cityid" : self.sheet3.cell_value (2, 6),
             "cityname" : self.sheet3.cell_value (2, 5),
             "lon" : self.sheet3.cell_value (2, 7),
             "lat" : self.sheet3.cell_value (2, 8),
             "userid" : uid,
             "key" :key
         }
-        response = requests.get(base_url,params_receiptList)
+        response = requests.get(url,params_receiptList)
         return  response
 
     #获取内测的普通活动
     def get_game(self):
-        response = self.get_receiptList()
+        try:
+            response = self.get_receiptList()
+        except:
+            self.assertTrue(None,"获取小票列表失败")
         dict_game = {}
-        if response.status_code ==200:
-            result = json.loads(response.content)
-            games = result["data"]["games"]
-            for game in games:
-                if "内测" in game["title"] and game["gametype"] ==1:      #gametype =1为普通拍立赚活动，gametype=2为众包活动
-                    dict_game = game
-                    print(dict_game)
-                    break
+        result = json.loads(response.content)
+        games = result["data"]["games"]
+        for game in games:
+            if "内测" in game["title"] and game["gametype"] ==1:      #gametype =1为普通拍立赚活动，gametype=2为众包活动
+                dict_game = game
+                break
         return dict_game
 
     # 获取内测的众包活动
     def get_zbgame(self):
-        response = self.get_receiptList ()
+        try:
+            response = self.get_receiptList ()
+        except:
+            self.assertTrue(None,"获取小票列表失败")
         dict_game = {}
-        if response.status_code == 200:
-            result = json.loads (response.content)
-            games = result["data"]["games"]
-            for game in games:
-                if "内测" in game["title"] and game["gametype"] == 2:  # gametype =1为普通拍立赚活动，gametype=2为众包活动
-                    dict_game = game
-                    print (dict_game)
-                    break
+        result = json.loads(response.content)
+        games = result["data"]["games"]
+        for game in games:
+            if "内测" in game["title"] and game["gametype"] == 2:  # gametype =1为普通拍立赚活动，gametype=2为众包活动
+                dict_game = game
+                break
         return dict_game
 
     def test_receipUpload(self):
         u"测试拍立赚上传小票 - 普通活动"
         base_url = self.sheet3.cell_value(3,2)
-        dict_game = self.get_game()       #内测的拍立赚普通活动活动
-        response_receiptList = self.get_receiptList()
-        result_receiptList = json.loads(response_receiptList.content)   #不是内测的活动
-        uid = self.sheet3.cell_value (3, 4)
-        if isinstance (uid, float):
-            uid = str (math.floor (uid))
-        devcode = self.common_method.devcode
-        if dict_game:     #如果不存在内测活动，则取普通活动列表的第一个活动（使用内测活动不会产生过多脏数据）
-            gameid = str(dict_game["gameid"])
-            taskid = str(dict_game["taskid"])
-            positionid = dict_game["positionid"]
+        url = self.svrAddr + base_url
+        try:
+            self.dict_game = self.get_game()                                      #内测的拍立赚普通活动活动
+        except:
+            self.assertTrue(None,"获取内测拍立赚活动失败")
+        try:
+            response_receiptList = self.get_receiptList()
+        except:
+            self.assertTrue(None,"获取小票列表失败")
+        result_receiptList = json.loads(response_receiptList.content)       #不是内测的活动
+        uid = self.sheet3.cell_value(3, 4)
+        devcode = serverAddressConfig.devcode
+        if self.dict_game:     #如果不存在内测活动，则取普通活动列表的第一个活动（使用内测活动不会产生过多脏数据）
+            gameid = str(self.dict_game["gameid"])
+            taskid = str(self.dict_game["taskid"])
+            positionid = self.dict_game["positionid"]
         elif result_receiptList["data"]["games"]:
             for games in result_receiptList["data"]["games"]:
                 if games["gametype"] != 2:         #不是众包活动
@@ -103,7 +110,7 @@ class ReceiptGamesTests(unittest.TestCase):
         }]
         params = {
             "userid" :uid,
-            "cityid": math.floor(self.sheet3.cell_value (3, 5)),
+            "cityid": self.sheet3.cell_value(3, 5),
             "taskjson": json.dumps(taskjson),
             "lon": self.sheet3.cell_value (2, 7),
             "lat": self.sheet3.cell_value (2, 8),
@@ -113,7 +120,7 @@ class ReceiptGamesTests(unittest.TestCase):
             "key": key,
             "devcode":devcode
         }
-        response = requests.get(base_url,params)
+        response = requests.get(url,params)
         self.assertEqual(response.status_code,200)
         result = json.loads(response.content)
         if result["status"] ==10001:
@@ -131,10 +138,8 @@ class ReceiptGamesTests(unittest.TestCase):
         response_receiptList = self.get_receiptList()
         self.assertEqual(response_receiptList.status_code,200)
         result_receiptList = json.loads (response_receiptList.content)  # 不是内测的活动
-        devcode = self.common_method.devcode
+        devcode = serverAddressConfig.devcode
         uid = self.sheet3.cell_value (4, 4)
-        if isinstance (uid, float):
-            uid = str(math.floor (uid))
         if dict_zbgame:  # 如果不存在内测活动，则取活动列表的第一个活动（使用内测活动不会产生过多脏数据）
             gameid = str (dict_zbgame["gameid"])
             positionid = dict_zbgame["positionid"]
@@ -150,7 +155,7 @@ class ReceiptGamesTests(unittest.TestCase):
         key = Key.get_key(self,list_key)
         params = {
             "userid": uid,
-            "cityid": math.floor (self.sheet3.cell_value (4, 5)),
+            "cityid": self.sheet3.cell_value (4, 5),
             "lon": self.sheet3.cell_value (2, 7),
             "lat": self.sheet3.cell_value (2, 8),
             "positionid": positionid,
@@ -160,9 +165,7 @@ class ReceiptGamesTests(unittest.TestCase):
         }
         response = requests.get(base_url, params=params)
         self.assertEqual (response.status_code, 200)
-        print(response.url)
         result = json.loads (response.content)
-        print(result)
         if result["status"] == 10001:
             self.assertNotEqual (result["data"]["taskid"], None)
         elif result["status"] == 20005:
@@ -175,7 +178,7 @@ class ReceiptGamesTests(unittest.TestCase):
         u"测试我的列表"
         base_url = self.sheet3.cell_value(7,2)
         userid = self.sheet3.cell_value(7,4)
-        devcode = self.common_method.devcode
+        devcode = serverAddressConfig.devcode
         pages = "1"
         key_list=[userid,devcode,pages]
         key = Key.get_key(self,key_list)
@@ -187,8 +190,8 @@ class ReceiptGamesTests(unittest.TestCase):
             "cityid":self.sheet3.cell_value(7,5),
             "userid":userid,
             "pages":pages,
-            "appversion":self.common_method.version,
-            "devcode":self.common_method.devcode
+            "appversion":serverAddressConfig.version,
+            "devcode":serverAddressConfig.devcode
         }
         response = requests.get(base_url,params=params)
         self.assertEqual(response.status_code,200)

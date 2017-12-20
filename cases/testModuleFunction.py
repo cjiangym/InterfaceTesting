@@ -73,10 +73,10 @@ class HomebuttonListTest(unittest.TestCase):
     def test_recommenModule(self):
         u"测试首页推荐模块功能"
         base_url = self.sheet1.cell_value(45,2)
-        url = self.svrAddr
+        url = self.svrAddr + base_url
         uid = self.sheet1.cell_value(45,4)
         cityid = self.sheet1.cell_value(45,5)
-        timestamp = self.svrAddr.timestamp
+        timestamp = serverAddressConfig.timestamp
         list_key = [uid,cityid,timestamp]
         key = Key.get_key(self,list_key)
         params = {
@@ -90,7 +90,7 @@ class HomebuttonListTest(unittest.TestCase):
             "devcode":serverAddressConfig.devcode,
             "appversion":serverAddressConfig.version
         }
-        response = requests.get(base_url,params=params)
+        response = requests.get(url,params=params)
         self.assertEqual(response.status_code,200)
         result = json.loads(response.content)
         self.assertEqual(result["status"],10001)
@@ -99,17 +99,18 @@ class HomebuttonListTest(unittest.TestCase):
     def test_beanGmaeList(self):
         u"测试精明豆页面板块功能按钮"
         base_url = self.sheet1.cell_value(47,2)
+        url = self.svrAddr + base_url
         params = {
             "cityid": self.sheet1.cell_value(47,5),
             "lon": self.sheet1.cell_value (45, 6),
             "lat": self.sheet1.cell_value (45, 7),
-            "timestamp": self.common_method.timestamp,
+            "timestamp": serverAddressConfig.timestamp,
             "uid": self.sheet1.cell_value(47,4),
-            "os": self.common_method.os,
-            "devcode": self.common_method.devcode,
-            "appversion": self.common_method.version
+            "os": serverAddressConfig.os,
+            "devcode": serverAddressConfig.devcode,
+            "appversion": serverAddressConfig.version
         }
-        response = requests.get(base_url,params=params)
+        response = requests.get(url,params=params)
         self.assertEqual(response.status_code,200)
         result = json.loads(response.content)
         self.assertEqual(result["status"],10001)
