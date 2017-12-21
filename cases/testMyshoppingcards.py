@@ -61,7 +61,7 @@ class ShoppingCardsTest(unittest.TestCase):
         self.assertEqual(response.status_code,200)
         result = json.loads(response.content)
         self.assertEqual (result["status"], 10001)
-        self.assertNotEqual(result["data"],"null")
+        self.assertNotEqual(result["data"],None)
         self.assertNotEqual(result["data"],{})
         return result
 
@@ -101,7 +101,7 @@ class ShoppingCardsTest(unittest.TestCase):
         response_cardDetail = requests.get(url,params=params)
         result = json.loads (response_cardDetail.content)
         self.assertEqual(result["status"],10001)
-        self.assertNotEqual(result["data"],"null")
+        self.assertNotEqual(result["data"],None)
         self.assertNotEqual (result["data"],{})
 
     def test_getshoppingcardListByRetailid(self):
@@ -138,7 +138,7 @@ class ShoppingCardsTest(unittest.TestCase):
         self.assertEqual(response.status_code,200)
         result = json.loads(response.content)
         self.assertEqual(result["status"],10001)
-        self.assertNotEqual(result["data"],"null")
+        self.assertNotEqual(result["data"],None)
         self.assertNotEqual(result["data"],{})
         self.assertNotEqual (result["data"]["items"],[])
 

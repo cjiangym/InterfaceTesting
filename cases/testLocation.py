@@ -81,7 +81,7 @@ class CityLocationTest(unittest.TestCase):
         result = json.loads(response.content)
         self.assertEqual(result["status"],10001)
         self.assertNotEqual(result["data"],{})
-        self.assertNotEqual (result["data"],"null")
+        self.assertNotEqual (result["data"],None)
         self.assertEqual(result["data"]["districts"][0]["districtId"],-2)
         self.assertEqual(result["data"]["districts"][0]["districtName"],"附近")
         self.assertEqual(result["data"]["districts"][0]["towns"][0]["townName"],"附近（智能范围）")

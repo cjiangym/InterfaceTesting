@@ -84,7 +84,7 @@ class ExchangegiftTest(unittest.TestCase):
             self.assertTrue(None,"兑换失败")
         self.assertEqual(self.result["status"],10001)
         self.assertNotEqual(self.result["data"],{})
-        self.assertNotEqual(self.result["data"],"null")
+        self.assertNotEqual(self.result["data"],None)
         self.assertNotEqual(self.result["data"]["giftnumber"],None)
     '''
     '''
@@ -99,7 +99,7 @@ class ExchangegiftTest(unittest.TestCase):
             self.assertTrue(None,"兑换失败")
         self.assertEqual(self.result["status"],10001)
         self.assertNotEqual(self.result["data"],{})
-        self.assertNotEqual(self.result["data"],"null")
+        self.assertNotEqual(self.result["data"],None)
         self.assertNotEqual(self.result["data"]["giftnumber"],None)
     '''
 

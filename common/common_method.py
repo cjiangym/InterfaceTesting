@@ -30,16 +30,6 @@ class Common_method():
         report_path = rootPath + "\\report\\" + self.testTime + "-testResult.html"
         return report_path
 
-    # 获取已关注列表
-    def get_mySubscribeList(self, uid):
-        base_url = "http://svr2.ismartgo.cn:29094/retailsv/app/retails/getSubscribeList.do"
-        params = {
-            "userid": uid,
-            "page": 1
-        }
-        response = requests.get (base_url, params=params)
-        return response
-
     #封装request.get方法
     def get_response(self,svrAddr,base_url,params_name,params_value):
         url = svrAddr+base_url

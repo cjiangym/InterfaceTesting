@@ -19,8 +19,7 @@ class ReceiptGamesTests(unittest.TestCase):
 
     #获取小票列表
     def get_receiptList(self):
-        base_url = self.sheet3.cell_value(2,2)
-        url = self.svrAddr + base_url
+        base_url = self.svrAddr + self.sheet3.cell_value(2,2)
         uid = self.sheet3.cell_value (2, 4)
         devcode = serverAddressConfig.devcode
         pages = "1"
@@ -39,7 +38,7 @@ class ReceiptGamesTests(unittest.TestCase):
             "userid" : uid,
             "key" :key
         }
-        response = requests.get(url,params_receiptList)
+        response = requests.get(base_url,params_receiptList)
         return  response
 
     #获取内测的普通活动
@@ -133,7 +132,7 @@ class ReceiptGamesTests(unittest.TestCase):
 
     def test_getZbgame(self):
         u"测试领取众包活动"
-        base_url = self.sheet3.cell_value (4, 2)
+        base_url = self.svrAddr + self.sheet3.cell_value (4, 2)
         dict_zbgame = self.get_zbgame()  # 内测的众包活动活动
         response_receiptList = self.get_receiptList()
         self.assertEqual(response_receiptList.status_code,200)
@@ -176,18 +175,18 @@ class ReceiptGamesTests(unittest.TestCase):
 
     def test_myTaskList(self):
         u"测试我的列表"
-        base_url = self.sheet3.cell_value(7,2)
-        userid = self.sheet3.cell_value(7,4)
+        base_url = self.svrAddr + self.sheet3.cell_value(5,2)
+        userid = self.sheet3.cell_value(5,4)
         devcode = serverAddressConfig.devcode
         pages = "1"
         key_list=[userid,devcode,pages]
         key = Key.get_key(self,key_list)
         params = {
-            "status":self.sheet3.cell_value(7,8),
-            "lon":self.sheet3.cell_value(7,6),
-            "lat":self.sheet3.cell_value(7,7),
+            "status":self.sheet3.cell_value(5,8),
+            "lon":self.sheet3.cell_value(5,6),
+            "lat":self.sheet3.cell_value(5,7),
             "key":key,
-            "cityid":self.sheet3.cell_value(7,5),
+            "cityid":self.sheet3.cell_value(5,5),
             "userid":userid,
             "pages":pages,
             "appversion":serverAddressConfig.version,
@@ -196,7 +195,7 @@ class ReceiptGamesTests(unittest.TestCase):
         response = requests.get(base_url,params=params)
         self.assertEqual(response.status_code,200)
         result = json.loads(response.content)
-        self.assertNotEqual(result["data"],"null")
+        self.assertNotEqual(result["data"],None)
         self.assertNotEqual (result["data"]["tasks"],[])
 
 

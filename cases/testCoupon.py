@@ -59,7 +59,7 @@ class CouponTest(unittest.TestCase):
         result = json.loads (self.response.content)
         self.assertEqual (result["status"], 10001)
         self.assertNotEqual(result["data"],{})
-        self.assertNotEqual(result["data"],"null")
+        self.assertNotEqual(result["data"],None)
 
     def test_mygiftcoupons(self):
         u"测试我的兑换代金券列表"
@@ -88,7 +88,7 @@ class CouponTest(unittest.TestCase):
         result = json.loads(response.content)
         self.assertEqual(result["status"],10001)
         self.assertNotEqual(result["data"],{})
-        self.assertNotEqual(result["data"],"null")
+        self.assertNotEqual(result["data"],None)
 
 
     def test_couponDetail(self):
@@ -125,6 +125,6 @@ class CouponTest(unittest.TestCase):
             result = json.loads(response.content)
             self.assertEqual(result["status"],10001)
             self.assertNotEqual(result["data"],{})
-            self.assertNotEqual(result["data"],"null")
+            self.assertNotEqual(result["data"],None)
         else:
             self.assertTrue(None,"该用户没有优惠券,无法查看优惠券详情")

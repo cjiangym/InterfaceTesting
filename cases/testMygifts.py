@@ -39,7 +39,7 @@ class MygiftsTest(unittest.TestCase):
         response = requests.get(url,params=params)
         result = json.loads(response.content)
         self.assertEqual(result["status"],10001)
-        self.assertNotEqual(result["data"],"null")
+        self.assertNotEqual(result["data"],None)
         self.assertNotEqual(result["data"],{})
         self.assertNotEqual(result["data"]["subjectGiftList"],[])
 
@@ -60,7 +60,7 @@ class MygiftsTest(unittest.TestCase):
         response = requests.get (url, params=params)
         result = json.loads (response.content)
         self.assertEqual (result["status"], 10001)
-        self.assertNotEqual(result["data"],"null")
+        self.assertNotEqual(result["data"],None)
         self.assertNotEqual(result["data"],{})
         self.assertNotEqual(result["data"]["categoryGiftList"],[])
 
@@ -88,8 +88,8 @@ class MygiftsTest(unittest.TestCase):
         self.assertEqual(self.response.status_code,200)
         result = json.loads(self.response.content)
         self.assertEqual(result["status"],10001)
-        self.assertNotEqual(result["data"],"null")
-        self.assertNotEqual (result["data"], {})
+        self.assertNotEqual(result["data"],None)
+        self.assertNotEqual (result["data"],{})
 
     def test_giftDetail(self):
         u"测试已兑换的礼品详情"

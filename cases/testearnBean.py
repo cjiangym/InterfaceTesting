@@ -59,7 +59,7 @@ class DailySign_shopSign_goodsScanTest(unittest.TestCase):
             self.assertEqual(response.status_code,200)
             result = json.loads(response.content)
             self.assertEqual(result["status"],10001)
-            self.assertNotEqual(result["data"],"null")
+            self.assertNotEqual(result["data"],None)
             self.assertNotEqual (result["data"], {})
             self.assertNotEqual (result["data"]["shopSignList"],[])
             result = json.loads(response.content)
@@ -155,7 +155,7 @@ class DailySign_shopSign_goodsScanTest(unittest.TestCase):
             self.assertEqual(response.status_code,200)
             result = json.loads(response.content)
             self.assertEqual (result["status"], 10001)
-            self.assertNotEqual (result["data"], "null")
+            self.assertNotEqual (result["data"], None)
             self.assertNotEqual (result["data"], {})
             self.assertNotEqual (result["data"]["scanShopList"],[])
             return result

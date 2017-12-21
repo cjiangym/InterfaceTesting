@@ -124,4 +124,4 @@ class LoginTest(unittest.TestCase):
         result = json.loads(response.content)
         self.assertEqual(result["status"],10001)
         self.assertNotEqual(result["data"],{})
-        self.assertNotEqual (result["data"],"null")
+        self.assertNotEqual (result["data"],None)
