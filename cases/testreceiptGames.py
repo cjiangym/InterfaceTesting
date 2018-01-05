@@ -139,8 +139,9 @@ class ReceiptGamesTests(unittest.TestCase):
         result_receiptList = json.loads (response_receiptList.content)  # 不是内测的活动
         devcode = serverAddressConfig.devcode
         uid = self.sheet3.cell_value (4, 4)
+        gameid = ""
         if dict_zbgame:  # 如果不存在内测活动，则取活动列表的第一个活动（使用内测活动不会产生过多脏数据）
-            gameid = str (dict_zbgame["gameid"])
+            gameid = str(dict_zbgame["gameid"])
             positionid = dict_zbgame["positionid"]
         elif result_receiptList["data"]["games"]:
             for games in result_receiptList["data"]["games"]:
@@ -148,8 +149,8 @@ class ReceiptGamesTests(unittest.TestCase):
                     gameid = str (games["gameid"])
                     positionid = str (games["positionid"])
                     break
-        else:
-            self.assertEqual(result_receiptList["msg"],"拍立赚列表查询失败")
+        if gameid =="":
+            self.assertEqual("","没有众包活动，无法领取")
         list_key = [uid, devcode, gameid]
         key = Key.get_key(self,list_key)
         params = {

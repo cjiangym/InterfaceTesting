@@ -44,13 +44,13 @@ class CouponTest(unittest.TestCase):
                 self.login_data = self.login.phone_login (phone, psw)
             else:
                 self.login_data = self.login.wx_login(phone)
-            #uid = "300176"
-            #authkey = "gea2s1AGywNgN4Jm"
         except:
             self.assertTrue(None,"登录失败，无法获取到authkey")
         '''从登录接口获取用户id,authkey,用户计算加密'''
-        uid = str(self.login_data["data"]["user"]["id"])
-        authkey = self.login_data["data"]["authkey"]
+        #uid = str(self.login_data["data"]["user"]["id"])
+        #authkey = self.login_data["data"]["authkey"]
+        uid = "1603491"
+        authkey = "nwkXC3dQjUrhYNYi"
         try:
             self.response = self.get_myconponList(uid,authkey)
         except:
